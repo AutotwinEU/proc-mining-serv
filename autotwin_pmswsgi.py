@@ -1,6 +1,9 @@
 import logging
-from flask import Flask, json, Response
+from flask import Flask, request, json, Response
 from paste.translogger import TransLogger
+import os
+import tempfile
+import autotwin_gmglib as gmg
 
 LOG_FORMAT = "%(asctime)s %(message)s"
 DATE_FORMAT = "%Y-%m-%dT%H:%M:%S%z"
@@ -14,13 +17,31 @@ logging.basicConfig(format=LOG_FORMAT, datefmt=DATE_FORMAT, level=logging.INFO)
 app = Flask("proc-mining-serv")
 wsgi = TransLogger(app, format=MSG_FORMAT, setup_console_handler=False)
 
+NEO4J_URI = os.environ["NEO4J_URI"]
+NEO4J_USERNAME = os.environ["NEO4J_USERNAME"]
+NEO4J_PASSWORD = os.environ["NEO4J_PASSWORD"]
+NEO4J_DATABASE = os.environ["NEO4J_DATABASE"]
+
 
 @app.post("/graph-model")
 def create_graph_model() -> Response:
     """
     Create a graph model in the SKG.
     """
-    response_data = json.dumps({"model_id": 0})
+    request_data = request.get_data()
+    config = json.loads(request_data)
+    config["work_path"] = tempfile.mkdtemp()
+    config["neo4j"]["uri"] = NEO4J_URI
+    config["neo4j"]["username"] = NEO4J_USERNAME
+    config["neo4j"]["password"] = NEO4J_PASSWORD
+    config["neo4j"]["database"] = NEO4J_DATABASE
+    config["data"]["path"] = "log.csv"
+    config["model"]["path"] = "model.json"
+    gmg.import_log(config)
+    log = gmg.load_log(config)
+    model = gmg.generate_model(log, config)
+    model_id = gmg.export_model(model, config)
+    response_data = json.dumps({"model_id": model_id})
     return Response(response_data, status=201, mimetype="application/json")
 
 
