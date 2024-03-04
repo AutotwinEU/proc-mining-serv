@@ -2,7 +2,7 @@ import logging
 from flask import Flask, request, json, Response
 from paste.translogger import TransLogger
 import os
-import tempfile
+from tempfile import TemporaryDirectory
 import autotwin_gmglib as gmg
 
 LOG_FORMAT = "%(asctime)s %(message)s"
@@ -32,7 +32,8 @@ def create_graph_model() -> Response:
     """
     request_data = request.get_data()
     config = json.loads(request_data)
-    config["work_path"] = tempfile.mkdtemp()
+    work_directory = TemporaryDirectory()
+    config["work_path"] = work_directory.name
     config["neo4j"]["uri"] = NEO4J_URI
     config["neo4j"]["username"] = NEO4J_USERNAME
     config["neo4j"]["password"] = NEO4J_PASSWORD
