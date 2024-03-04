@@ -2,8 +2,7 @@ from flask.testing import FlaskClient
 
 
 def test_create_graph_model(client: FlaskClient):
-    """
-    Test the creation of a graph model.
+    """Test the creation of a graph model.
 
     Args:
         client: Test client.
@@ -13,8 +12,7 @@ def test_create_graph_model(client: FlaskClient):
 
 
 def test_create_petri_net(client: FlaskClient):
-    """
-    Test the creation of a Petri net.
+    """Test the creation of a Petri net.
 
     Args:
         client: Test client.
@@ -24,8 +22,7 @@ def test_create_petri_net(client: FlaskClient):
 
 
 def test_create_automaton(client: FlaskClient):
-    """
-    Test the creation of an automaton.
+    """Test the creation of an automaton.
 
     Args:
         client: Test client.

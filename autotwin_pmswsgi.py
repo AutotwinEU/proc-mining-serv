@@ -25,8 +25,10 @@ NEO4J_DATABASE = os.environ["NEO4J_DATABASE"]
 
 @app.post("/graph-model")
 def create_graph_model() -> Response:
-    """
-    Create a graph model in the SKG.
+    """Create a graph model in the SKG.
+
+    Returns:
+        Response with model ID.
     """
     request_data = request.get_data()
     config = json.loads(request_data)
@@ -47,8 +49,10 @@ def create_graph_model() -> Response:
 
 @app.post("/petri-net")
 def create_petri_net() -> Response:
-    """
-    Create a Petri net in the SKG.
+    """Create a Petri net in the SKG.
+
+    Returns:
+        Response with model ID.
     """
     response_data = json.dumps({"model_id": 0})
     return Response(response_data, status=201, mimetype="application/json")
@@ -56,8 +60,10 @@ def create_petri_net() -> Response:
 
 @app.post("/automaton")
 def create_automaton() -> Response:
-    """
-    Create an automaton in the SKG.
+    """Create an automaton in the SKG.
+
+    Returns:
+        Response with model ID.
     """
     response_data = json.dumps({"model_id": 0})
     return Response(response_data, status=201, mimetype="application/json")

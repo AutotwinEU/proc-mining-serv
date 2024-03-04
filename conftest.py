@@ -7,8 +7,7 @@ from flask.testing import FlaskCliRunner
 
 @pytest.fixture()
 def app() -> Flask:
-    """
-    Define the test application.
+    """Define the test application.
 
     Yields:
         Test application.
@@ -19,8 +18,7 @@ def app() -> Flask:
 
 @pytest.fixture()
 def client(app: Flask) -> FlaskClient:
-    """
-    Define the test client.
+    """Define the test client.
 
     Args:
         app: Test application.
@@ -33,8 +31,7 @@ def client(app: Flask) -> FlaskClient:
 
 @pytest.fixture()
 def runner(app: Flask) -> FlaskCliRunner:
-    """
-    Define the test CLI runner.
+    """Define the test CLI runner.
 
     Args:
         app: Test application.
