@@ -4,6 +4,7 @@ from paste.translogger import TransLogger
 import os
 from tempfile import TemporaryDirectory
 import autotwin_gmglib as gmg
+from werkzeug.exceptions import HTTPException
 
 LOG_FORMAT = "%(asctime)s %(message)s"
 DATE_FORMAT = "%Y-%m-%dT%H:%M:%S%z"
@@ -68,6 +69,25 @@ def create_automaton() -> Response:
     """
     response_data = json.dumps({"model_id": 0})
     return Response(response_data, status=201, mimetype="application/json")
+
+
+@app.errorhandler(HTTPException)
+def transform_exception(error) -> Response:
+    """Transform an HTTP exception into the JSON format.
+
+    Returns:
+        Response with error information.
+    """
+    response = error.get_response()
+    response.data = json.dumps(
+        {
+            "code": error.code,
+            "name": error.name,
+            "description": error.description,
+        }
+    )
+    response.content_type = "application/json"
+    return response
 
 
 if __name__ == "__main__":
