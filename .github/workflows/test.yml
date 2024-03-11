@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - feature/automata_learning
   pull_request:
     branches:
       - main
@@ -13,6 +14,15 @@ jobs:
   test-code:
     name: Test code
     runs-on: ubuntu-latest
+    env:
+      RES_PATH: /home/runner/work/unif-sys-disc/unif-sys-disc/resources
+      SKG_RES_PATH: /home/runner/work/unif-sys-disc/unif-sys-disc/resources/skg_resources
+      SEM_RES_PATH: /home/runner/work/unif-sys-disc/unif-sys-disc/resources/sem_resources
+      LSHA_RES_PATH: /home/runner/work/unif-sys-disc/unif-sys-disc/resources/lsha_resources
+      NEO4J_URI: ${{ secrets.NEO4J_URI }}
+      NEO4J_USERNAME: ${{ secrets.NEO4J_USERNAME }}
+      NEO4J_PASSWORD: ${{ secrets.NEO4J_PASSWORD }}
+      NEO4J_SCHEMA: ${{ secrets.NEO4J_SCHEMA }}
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -28,5 +38,5 @@ jobs:
         run: poetry run flake8 .
       - name: Check code format
         run: poetry run black --check .
-      # - name: Perform unit test
-      #   run: poetry run pytest tests.py
+      - name: Perform unit test
+        run: poetry run pytest tests.py

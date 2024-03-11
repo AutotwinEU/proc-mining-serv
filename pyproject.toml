@@ -26,6 +26,9 @@ Flask = "^3.0.2"
 Paste = "^3.7.1"
 waitress = "^3.0.0"
 autotwin_gmglib = "^0.0.3"
+lsha = "^0.1.0"
+skg_connector = "^0.1.2"
+sha2dt-semantic-mapper = "^0.1.1"
 
 [tool.poetry.group.test.dependencies]
 black = "^24.2.0"

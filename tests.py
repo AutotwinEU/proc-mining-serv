@@ -22,10 +22,26 @@ def test_create_petri_net(client: FlaskClient):
 
 
 def test_create_automaton(client: FlaskClient):
-    """Test the creation of an automaton.
+    """
+    Test the creation of an automaton.
 
     Args:
         client: Test client.
     """
-    response = client.post("/automaton")
-    assert response.status_code == 201
+    c_type = "application/json"
+
+    payload = """{
+    "test": "true",
+    "pov": "plant",
+    "start": "0",
+    "end": "1000"
+    }"""
+    response = client.post("/automaton", data=payload, content_type=c_type)
+    assert response.status == "201 CREATED"
+
+    payload = """{
+    "pov": "plant",
+    "end": "1000"
+    }"""
+    response = client.post("/automaton", data=payload, content_type=c_type)
+    assert response.status == "400 BAD REQUEST"

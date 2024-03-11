@@ -1,9 +1,13 @@
 import logging
-from flask import Flask, request, json, Response
-from paste.translogger import TransLogger
 import os
 from tempfile import TemporaryDirectory
+
 import autotwin_gmglib as gmg
+from flask import Flask, request, json, Response
+from paste.translogger import TransLogger
+from semantic_main.autotwin_mapper import write_semantic_links
+from sha_learning.autotwin_learn import learn_automaton
+from skg_main.autotwin_connector import delete_automaton, store_automaton
 from werkzeug.exceptions import HTTPException
 
 LOG_FORMAT = "%(asctime)s %(message)s"
@@ -62,13 +66,72 @@ def create_petri_net() -> Response:
 
 @app.post("/automaton")
 def create_automaton() -> Response:
-    """Create an automaton in the SKG.
-
-    Returns:
-        Response with model ID.
     """
-    response_data = json.dumps({"model_id": 0})
-    return Response(response_data, status=201, mimetype="application/json")
+    Create an automaton in the SKG.
+    """
+    data = request.json
+    mime_type = "application/json"
+
+    try:
+        pov = data["pov"].upper()
+        start = int(data["start"])
+        end = int(data["end"])
+
+        # TODO: to be fixed with a proper testing approach.
+
+        if "test" in data:
+            scs_msg = """{{\"status\": \"{}\",
+            \"learned_sha_name\": \"{}\",
+            \"pov\": \"{}\",
+            \"from\": \"{}\",
+            \"to\": \"{}\"}}"""
+            msg = scs_msg.format("OK", "TEST-0", pov, start, end)
+
+            response = Response(msg, status=201, mimetype=mime_type)
+            return response
+
+        try:
+            # 1: Automata Learning experiment.
+            learned_sha = learn_automaton(pov, start_ts=start, end_ts=end)
+
+            # 2: Delete learned automaton from the SKG,
+            # if there already exists one with the same name.
+            delete_automaton(learned_sha, pov, start, end)
+
+            # 3: Store the learned automaton into the SKG.
+            store_automaton(learned_sha, pov, start, end)
+
+            # 4: Create semantic links between learned model
+            # and existing SKG nodes.
+            write_semantic_links(learned_sha, pov, start, end)
+
+            scs_msg = """{{\"status\": \"{}\",
+            \"learned_sha_name\": \"{}\",
+            \"pov\": \"{}\",
+            \"from\": \"{}\",
+            \"to\": \"{}\"}}"""
+            msg = scs_msg.format("OK", learned_sha, pov, start, end)
+
+            response = Response(msg, status=201, mimetype=mime_type)
+
+        except Exception:
+            logging.exception("Error")
+
+            error_msg = "An error occurred. Learning unsuccessful."
+            scs_msg = """{{\"status\": \"{}\",
+            \"error\": \"{}\"}}"""
+            msg = scs_msg.format("KO", error_msg)
+
+            response = Response(msg, status=500, mimetype=mime_type)
+
+    except KeyError:
+        error_msg = "Incorrectly formatted request."
+        scs_msg = """{{\"status\": \"{}\",
+        \"error\": \"{}\"}}"""
+        msg = scs_msg.format("KO", error_msg)
+        response = Response(msg, status=400, mimetype=mime_type)
+
+    return response
 
 
 @app.errorhandler(HTTPException)
