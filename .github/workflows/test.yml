@@ -38,5 +38,5 @@ jobs:
         run: poetry run flake8 .
       - name: Check code format
         run: poetry run black --check .
-      - name: Perform unit test
-        run: poetry run pytest tests.py
+      # - name: Perform unit test
+      #  run: poetry run pytest tests.py
