@@ -39,7 +39,24 @@ def create_graph_model() -> Response:
     config["neo4j"]["username"] = NEO4J_USERNAME
     config["neo4j"]["password"] = NEO4J_PASSWORD
     config["neo4j"]["database"] = NEO4J_DATABASE
-    config["data"]["path"] = "log.csv"
+    config["data"] = {
+        "path": "log.csv",
+        "mappings": {
+            "column": {
+                "time": "time",
+                "station": "station",
+                "part": "part",
+                "type": "type",
+                "activity": "activity",
+            },
+            "activity": {
+                "ENTER": "ENTER",
+                "EXIT": "EXIT",
+                "EXIT_AP": "EXIT_AP",
+                "EXIT_AR": "EXIT_AR",
+            },
+        },
+    }
     config["model"]["path"] = "model.json"
     gmg.import_log(config)
     log = gmg.load_log(config)
