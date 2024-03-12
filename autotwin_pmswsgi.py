@@ -4,7 +4,7 @@ from paste.translogger import TransLogger
 import os
 from tempfile import TemporaryDirectory
 import autotwin_gmglib as gmg
-from werkzeug.exceptions import HTTPException
+from werkzeug.exceptions import NotImplemented, HTTPException
 
 LOG_FORMAT = "%(asctime)s %(message)s"
 DATE_FORMAT = "%Y-%m-%dT%H:%M:%S%z"
@@ -73,8 +73,7 @@ def create_petri_net() -> Response:
     Returns:
         Response with model ID.
     """
-    response_data = json.dumps({"model_id": 0})
-    return Response(response_data, status=201, mimetype="application/json")
+    raise NotImplemented()  # noqa: F901
 
 
 @app.post("/automaton")
@@ -84,8 +83,7 @@ def create_automaton() -> Response:
     Returns:
         Response with model ID.
     """
-    response_data = json.dumps({"model_id": 0})
-    return Response(response_data, status=201, mimetype="application/json")
+    raise NotImplemented()  # noqa: F901
 
 
 @app.errorhandler(HTTPException)
