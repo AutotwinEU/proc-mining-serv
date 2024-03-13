@@ -44,7 +44,7 @@ To enable containerization, the PMS WSGI is also released as a Docker image,
 Docker engine is running on your machine. Deploying the PMS WSGI on a Docker
 container named `proc-mining-serv` can be done via a single command.
 
-    docker run --detach --env NEO4J_URI=<NEO4J_URI> --env NEO4J_USERNAME=<NEO4J_USERNAME> --env NEO4J_PASSWORD=<NEO4J_PASSWORD> --env NEO4J_DATABASE=<NEO4J_DATABASE> --name proc-mining-serv --publish 8080:8080 ghcr.io/autotwineu/proc-mining-serv
+    docker run --detach --env NEO4J_URI=<NEO4J_URI> --env NEO4J_USERNAME=<NEO4J_USERNAME> --env NEO4J_PASSWORD=<NEO4J_PASSWORD> --env NEO4J_DATABASE=<NEO4J_DATABASE> --name proc-mining-serv --pull always ghcr.io/autotwineu/proc-mining-serv
 
 `<NEO4J_URI>`, `<NEO4J_USERNAME>`, `<NEO4J_PASSWORD>` and `<NEO4J_DATABASE>`
 correspond to the values of the four environment variables required by the PMS
