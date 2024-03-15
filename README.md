@@ -86,13 +86,13 @@ The content types of the request and response for each API endpoint are both
 > ```json
 > {
 >     "name": "Pizza Line",
->     "version": "V3",
+>     "version": "V4",
 >     "neo4j": {
->         "interval": [0, 30000000]
+>         "interval": [0, 500000000]
 >     },
 >     "model": {
 >         "delays": {
->             "seize": 0,
+>             "seize": 30000,
 >             "release": 0
 >         }
 >     }
@@ -111,7 +111,7 @@ The content types of the request and response for each API endpoint are both
 > Example
 > ```json
 > {
->     "model_id": "4:1b90f766-3bae-49da-b38f-60f0d84b2d08:226294"
+>     "model_id": "4:d44864fe-b050-4f74-8157-60d999e3580b:273316"
 > }
 > ```
 
