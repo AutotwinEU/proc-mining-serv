@@ -81,6 +81,7 @@ The content types of the request and response for each API endpoint are both
 > | `neo4j:interval`       | `array[number\|string]` | Interval of the event log to be used   |
 > | `model:delays:seize`   | `number\|string`        | Delay in seizing a queued part         |
 > | `model:delays:release` | `number\|string`        | Delay in releasing a blocked part      |
+> | `model:cdf:points`     | `number`                | Maximum number of points in CDFs       |
 
 > Example
 > ```json
@@ -94,6 +95,9 @@ The content types of the request and response for each API endpoint are both
 >         "delays": {
 >             "seize": 30000,
 >             "release": 0
+>         },
+>         "cdf": {
+>             "points": 100
 >         }
 >     }
 > }
