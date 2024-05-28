@@ -74,14 +74,15 @@ The content types of the request and response for each API endpoint are both
 **Body**
 > Definition
 >
-> | Name                   | Type                    | Description                            |
-> |------------------------|-------------------------|----------------------------------------|
-> | `name`                 | `string`                | Name of the system to be discovered    |
-> | `version`              | `string`                | Version of the system to be discovered |
-> | `neo4j:interval`       | `array[number\|string]` | Interval of the event log to be used   |
-> | `model:delays:seize`   | `number\|string`        | Delay in seizing a queued part         |
-> | `model:delays:release` | `number\|string`        | Delay in releasing a blocked part      |
-> | `model:cdf:points`     | `number`                | Maximum number of points in CDFs       |
+> | Name                   | Type                    | Description                                   |
+> |------------------------|-------------------------|-----------------------------------------------|
+> | `name`                 | `string`                | Name of the system to be discovered           |
+> | `version`              | `string`                | Version of the system to be discovered        |
+> | `neo4j:interval`       | `array[number\|string]` | Interval of the event log to be used          |
+> | `model:formula:ratio`  | `number`                | Minimum ratio of a formula to the primary one |
+> | `model:delays:seize`   | `number\|string`        | Delay in seizing a queued part                |
+> | `model:delays:release` | `number\|string`        | Delay in releasing a blocked part             |
+> | `model:cdf:points`     | `number`                | Maximum number of points in a CDF             |
 
 > Example
 > ```json
@@ -92,6 +93,9 @@ The content types of the request and response for each API endpoint are both
 >         "interval": [0, 500000000]
 >     },
 >     "model": {
+>         "formula": {
+>             "ratio": 0.06
+>         },
 >         "delays": {
 >             "seize": 30000,
 >             "release": 0
