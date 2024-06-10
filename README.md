@@ -74,15 +74,15 @@ The content types of the request and response for each API endpoint are both
 **Body**
 > Definition
 >
-> | Name                   | Type                    | Description                                   |
-> |------------------------|-------------------------|-----------------------------------------------|
-> | `name`                 | `string`                | Name of the system to be discovered           |
-> | `version`              | `string`                | Version of the system to be discovered        |
-> | `neo4j:interval`       | `array[number\|string]` | Interval of the event log to be used          |
-> | `model:formula:ratio`  | `number`                | Minimum ratio of a formula to the primary one |
-> | `model:delays:seize`   | `number\|string`        | Delay in seizing a queued part                |
-> | `model:delays:release` | `number\|string`        | Delay in releasing a blocked part             |
-> | `model:cdf:points`     | `number`                | Maximum number of points in a CDF             |
+> | Name                   | Type                    | Default      | Description                                   |
+> |------------------------|-------------------------|--------------|-----------------------------------------------|
+> | `name`                 | `string`                | `"System"`   | Name of the system to be discovered           |
+> | `version`              | `string`                | `""`         | Version of the system to be discovered        |
+> | `neo4j:interval`       | `array[number\|string]` | `[0.0, 0.0]` | Interval of the event log to be used          |
+> | `model:formula:ratio`  | `number`                | `0.0`        | Minimum ratio of a formula to the primary one |
+> | `model:delays:seize`   | `number\|string`        | `0.0`        | Delay in seizing a queued part                |
+> | `model:delays:release` | `number\|string`        | `0.0`        | Delay in releasing a blocked part             |
+> | `model:cdf:points`     | `number`                | `100`        | Maximum number of points in a CDF             |
 
 > Example
 > ```json
