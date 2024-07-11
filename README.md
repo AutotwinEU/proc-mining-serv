@@ -74,15 +74,19 @@ The content types of the request and response for each API endpoint are both
 **Body**
 > Definition
 >
-> | Name                   | Type                    | Default      | Description                                   |
-> |------------------------|-------------------------|--------------|-----------------------------------------------|
-> | `name`                 | `string`                | `"System"`   | Name of the system to be discovered           |
-> | `version`              | `string`                | `""`         | Version of the system to be discovered        |
-> | `neo4j:interval`       | `array[number\|string]` | `[0.0, 0.0]` | Interval of the event log to be used          |
-> | `model:formula:ratio`  | `number`                | `0.0`        | Minimum ratio of a formula to the primary one |
-> | `model:delays:seize`   | `number\|string`        | `0.0`        | Delay in seizing a queued part                |
-> | `model:delays:release` | `number\|string`        | `0.0`        | Delay in releasing a blocked part             |
-> | `model:cdf:points`     | `number`                | `100`        | Maximum number of points in a CDF             |
+> | Name                       | Type                    | Default      | Description                                                       |
+> |----------------------------|-------------------------|--------------|-------------------------------------------------------------------|
+> | `name`                     | `string`                | `"System"`   | Name of the system to be discovered                               |
+> | `version`                  | `string`                | `""`         | Version of the system to be discovered                            |
+> | `neo4j:interval`           | `array[number\|string]` | `[0.0, 0.0]` | Interval of the event log to be used                              |
+> | `model:operation:io_ratio` | `number`                | `1.5`        | Minimum ratio of input to output for an ATTACH/COMPOSE operation  |
+> | `model:operation:co_ratio` | `number`                | `0.5`        | Minimum ratio of cross to output for an ATTACH/ORDINARY operation |
+> | `model:operation:oi_ratio` | `number`                | `1.5`        | Minimum ratio of output to input for a DETACH/DECOMPOSE operation |
+> | `model:operation:ci_ratio` | `number`                | `0.5`        | Minimum ratio of cross to input for a DETACH/ORDINARY operation   |
+> | `model:formula:ratio`      | `number`                | `0.0`        | Minimum ratio of a formula to the primary one                     |
+> | `model:delays:seize`       | `number\|string`        | `0.0`        | Maximum delay in seizing a queued part                            |
+> | `model:delays:release`     | `number\|string`        | `0.0`        | Maximum delay in releasing a blocked part                         |
+> | `model:cdf:points`         | `number`                | `100`        | Maximum number of points in a CDF                                 |
 
 > Example
 > ```json
@@ -93,6 +97,12 @@ The content types of the request and response for each API endpoint are both
 >         "interval": [0, 500000000]
 >     },
 >     "model": {
+>         "operation": {
+>             "io_ratio": 1.5,
+>             "co_ratio": 0.5,
+>             "oi_ratio": 1.5,
+>             "ci_ratio": 0.5
+>         },
 >         "formula": {
 >             "ratio": 0.06
 >         },
