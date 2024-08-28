@@ -4,6 +4,7 @@ from paste.translogger import TransLogger
 import os
 from tempfile import TemporaryDirectory
 import autotwin_gmglib as gmg
+import autotwin_pnglib as png
 from werkzeug.exceptions import NotImplemented, HTTPException
 
 LOG_FORMAT = "%(asctime)s %(message)s"
@@ -56,7 +57,36 @@ def create_petri_net() -> Response:
     Returns:
         Response with model ID.
     """
-    raise NotImplemented()  # noqa: F901
+    request_data = request.get_data()
+    request_data = json.loads(request_data)
+    config = gmg.load_config()
+    config = gmg._deep_update(request_data, config)
+    work_directory = TemporaryDirectory()
+    config["work_path"] = work_directory.name
+    config["neo4j"]["uri"] = NEO4J_URI
+    config["neo4j"]["username"] = NEO4J_USERNAME
+    config["neo4j"]["password"] = NEO4J_PASSWORD
+    config["neo4j"]["database"] = NEO4J_DATABASE
+
+    # extract log from skg, reconstruct state, and generate input data for Petri net generation
+    png.reconstruct_state(config)
+    png.generate_input_data(config['path']['recons_state'], config['path']['input_data'])
+
+    # load data, generate Petri net, and save it
+    data = png.load_data(config['path']['input_data'])
+    alg = png.Algorithm(data)
+    alg.generate_model(data)
+    alg.save_model(config['path']['model'])
+    alg.show_model(config['path']['model'], engine='dot', add_semantic=True)
+
+    # export discovered Petri net to SKG
+    model = alg.load_model(config['path']['model'])
+    petri_net_id = alg.export_model(model, config)
+    response_data = json.dumps({"model_id":  petri_net_id})
+
+    return Response(response_data, status=201, mimetype="application/json")
+
+    # raise NotImplemented()  # noqa: F901
 
 
 @app.post("/automaton")
