@@ -5,6 +5,14 @@ RUN apt-get update
 RUN apt-get install --yes graphviz graphviz-dev
 RUN pip wheel pygraphviz
 
+# install SCIP
+RUN apt-get install --yes \
+    libblas3 libcliquer1 libgfortran5 liblapack3 libopenblas0 libtbb12 wget
+RUN wget https://github.com/scipopt/scip/releases/download/v910/SCIPOptSuite-9.1.0-Linux-ubuntu22.deb
+RUN dpkg -i SCIPOptSuite-9.1.0-Linux-ubuntu22.deb \
+    && rm SCIPOptSuite-9.1.0-Linux-ubuntu22.deb
+
+
 # Stage 2: Run process mining service
 FROM python:3.10-slim AS stage2
 LABEL mantainer="Lulai Zhu"
