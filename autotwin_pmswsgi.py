@@ -57,6 +57,7 @@ def create_petri_net() -> Response:
     Returns:
         Response with model ID.
     """
+    # load configuration
     request_data = request.get_data()
     request_data = json.loads(request_data)
     config = gmg.load_config()
@@ -75,12 +76,9 @@ def create_petri_net() -> Response:
     # load data, generate Petri net, and save it
     data = png.load_data(config['path']['input_data'])
     alg = png.Algorithm(data)
-    alg.generate_model(data)
-    alg.save_model(config['path']['model'])
-    alg.show_model(config['path']['model'], engine='dot', add_semantic=True)
+    model = alg.generate_model(data)
 
     # export discovered Petri net to SKG
-    model = alg.load_model(config['path']['model'])
     petri_net_id = alg.export_model(model, config)
     response_data = json.dumps({"model_id":  petri_net_id})
 
