@@ -18,7 +18,6 @@ RUN dpkg -i SCIPOptSuite-9.1.0-Linux-ubuntu22.deb \
 WORKDIR /proc-mining-serv
 COPY --from=stage1 /spec-deps /proc-mining-serv
 RUN pip install *.whl && rm *.whl
-RUN pip install autotwin_pnglib
 RUN pip install autotwin_pmswsgi
 RUN useradd admin
 RUN chown -R admin /proc-mining-serv

@@ -63,11 +63,14 @@ def create_petri_net() -> Response:
     config = gmg.load_config()
     config = gmg._deep_update(request_data, config)
     work_directory = TemporaryDirectory()
-    config["work_path"] = work_directory.name
-    config["neo4j"]["uri"] = NEO4J_URI
-    config["neo4j"]["username"] = NEO4J_USERNAME
-    config["neo4j"]["password"] = NEO4J_PASSWORD
-    config["neo4j"]["database"] = NEO4J_DATABASE
+    config['work_path'] = work_directory.name
+    config['path']['recons_state'] = os.path.join(config['work_path'], config['path']['recons_state'])
+    config['path']['input_data'] = os.path.join(config['work_path'], config['path']['input_data'])
+    config['path']['model'] = os.path.join(config['work_path'], config['path']['model'])
+    config['neo4j']['uri'] = NEO4J_URI
+    config['neo4j']['username'] = NEO4J_USERNAME
+    config['neo4j']['password'] = NEO4J_PASSWORD
+    config['neo4j']['database'] = NEO4J_DATABASE
 
     # extract log from skg, reconstruct state, and generate input data for Petri net generation
     png.reconstruct_state(config)
@@ -76,15 +79,14 @@ def create_petri_net() -> Response:
     # load data, generate Petri net, and save it
     data = png.load_data(config['path']['input_data'])
     alg = png.Algorithm(data)
-    model = alg.generate_model(data)
+    alg.generate_model(data)
+    alg.save_model(config['path']['model'])
 
     # export discovered Petri net to SKG
+    model = alg.load_model(config['path']['model'])
     petri_net_id = alg.export_model(model, config)
-    response_data = json.dumps({"model_id":  petri_net_id})
-
+    response_data = json.dumps({'model_id':  petri_net_id})
     return Response(response_data, status=201, mimetype="application/json")
-
-    # raise NotImplemented()  # noqa: F901
 
 
 @app.post("/automaton")
