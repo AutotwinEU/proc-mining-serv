@@ -79,6 +79,7 @@ The content types of the request and response for each API endpoint are both
 > | `name`                     | `string`                | `"System"`   | Name of the system to be discovered                               |
 > | `version`                  | `string`                | `""`         | Version of the system to be discovered                            |
 > | `neo4j:interval`           | `array[number\|string]` | `[0.0, 0.0]` | Interval of the event log to be used                              |
+> | `model:time_unit`          | `string`                | `"s"`        | Unified time unit of algorithm and model parameters               |
 > | `model:operation:io_ratio` | `number`                | `1.5`        | Minimum ratio of input to output for an ATTACH/COMPOSE operation  |
 > | `model:operation:co_ratio` | `number`                | `0.5`        | Minimum ratio of cross to output for an ATTACH/ORDINARY operation |
 > | `model:operation:oi_ratio` | `number`                | `1.5`        | Minimum ratio of output to input for a DETACH/DECOMPOSE operation |
@@ -97,6 +98,7 @@ The content types of the request and response for each API endpoint are both
 >         "interval": [0, 500000000]
 >     },
 >     "model": {
+>         "time_unit": "ms",
 >         "operation": {
 >             "io_ratio": 1.5,
 >             "co_ratio": 0.5,
