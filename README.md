@@ -153,25 +153,54 @@ The content types of the request and response for each API endpoint are both
 > None
 
 **Body**
-> None
-
-**Response**
-> Code: 501
-
 > Definition
-> 
-> | Name          | Type     | Description                   |
-> |---------------|----------|-------------------------------|
-> | `code`        | `string` | Code of the HTTP error        |
-> | `name`        | `string` | Name of the HTTP error        |
-> | `description` | `string` | Description of the HTTP error |
+>
+> | Name                       | Type                    | Default      | Description                                                       |
+> |----------------------------|-------------------------|--------------|-------------------------------------------------------------------|
+> | `name`                     | `string`                | `"System"`   | Name of the system to be discovered                               |
+> | `version`                  | `string`                | `""`         | Version of the system to be discovered                            |
+> | `neo4j:interval`           | `array[number\|string]` | `[0.0, 0.0]` | Interval of the event log to be used                              |
+> | `model:operation:io_ratio` | `number`                | `1.5`        | Minimum ratio of input to output for an ATTACH/COMPOSE operation  |
+> | `model:operation:co_ratio` | `number`                | `0.5`        | Minimum ratio of cross to output for an ATTACH/ORDINARY operation |
+> | `model:operation:oi_ratio` | `number`                | `1.5`        | Minimum ratio of output to input for a DETACH/DECOMPOSE operation |
+> | `model:operation:ci_ratio` | `number`                | `0.5`        | Minimum ratio of cross to input for a DETACH/ORDINARY operation   |
+> | `model:formula:ratio`      | `number`                | `0.0`        | Minimum ratio of a formula to the primary one                     |
 
 > Example
 > ```json
 > {
->     "code": 501,
->     "name": "Not Implemented",
->     "description": "The server does not support the action requested by the browser."
+>     "name": "Pizza Line",
+>     "version": "V4",
+>     "neo4j": {
+>         "interval": [0, 500000000]
+>     },
+>     "model": {
+>         "operation": {
+>             "io_ratio": 1.5,
+>             "co_ratio": 0.5,
+>             "oi_ratio": 1.5,
+>             "ci_ratio": 0.5
+>         },
+>         "formula": {
+>             "ratio": 0.06
+>         }
+>     }
+> }
+> ```
+
+**Response**
+> Code: 201
+
+> Definition
+> 
+> | Name       | Type     | Description                   |
+> |------------|----------|-------------------------------|
+> | `model_id` | `string` | ID of the generated Petri net |
+
+> Example
+> ```json
+> {
+>     "model_id": "4:31f61bae-dad6-4cda-bb63-d4700847dea5:620887"
 > }
 > ```
 

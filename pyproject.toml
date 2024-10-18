@@ -26,6 +26,7 @@ Flask = "^3.0.2"
 Paste = "^3.7.1"
 waitress = "^3.0.0"
 autotwin_gmglib = "^0.1.7"
+autotwin_pnglib = "^0.1.2"
 
 [tool.poetry.group.test.dependencies]
 black = "^24.2.0"

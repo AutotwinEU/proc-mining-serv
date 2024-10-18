@@ -20,6 +20,29 @@ pygraphviz = ">=1.12,<2.0"
 scipy = ">=1.13.0,<2.0.0"
 
 [[package]]
+name = "autotwin-pnglib"
+version = "0.1.2"
+description = "Petri Net Model Generation Library for Auto-Twin"
+optional = false
+python-versions = "<4.0,>=3.10"
+files = [
+    {file = "autotwin_pnglib-0.1.2-py3-none-any.whl", hash = "sha256:4a88b9fc53fadd7cdd35da1be732a1d60520e17f7cf25fb66558dd42d9cc229a"},
+    {file = "autotwin_pnglib-0.1.2.tar.gz", hash = "sha256:e3c337ca7b02485cc6dfa32b4464027a886e80ba1b1bd565884b691c95adbe79"},
+]
+
+[package.dependencies]
+autotwin_gmglib = ">=0.1.4,<0.2.0"
+matplotlib = ">=3.8.3,<4.0.0"
+neo4j = ">=5.17.0,<6.0.0"
+networkx = ">=3.2.1,<4.0.0"
+numpy = ">=1.26.4,<2.0.0"
+pandas = ">=2.2.1,<3.0.0"
+pygraphviz = ">=1.12,<2.0"
+PySCIPOpt = ">=5.1.1,<6.0.0"
+scipy = ">=1.13.0,<2.0.0"
+SNAKES = ">=0.9.33,<0.10.0"
+
+[[package]]
 name = "black"
 version = "24.2.0"
 description = "The uncompromising code formatter."
@@ -944,6 +967,36 @@ files = [
 diagrams = ["jinja2", "railroad-diagrams"]
 
 [[package]]
+name = "pyscipopt"
+version = "5.1.1"
+description = "Python interface and modeling environment for SCIP"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "PySCIPOpt-5.1.1-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:72d2a57ac1428bb3daba4df39d6558bb8f4a013c264203fc149b7a20704aa1fa"},
+    {file = "PySCIPOpt-5.1.1-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:c992aea04cc4985a22d97c9f7c6dc2acaf558734504401737d5d12d561d6aa40"},
+    {file = "PySCIPOpt-5.1.1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:980186ac1f4af16d81beea8951d13b026e6799df385e0a4e6f081a64449b5316"},
+    {file = "PySCIPOpt-5.1.1-cp310-cp310-win_amd64.whl", hash = "sha256:ea694a5d0975c0dc97cb59b53bd94b5b9e6663e2b6e54e7ca6c89e2dfcae0ac4"},
+    {file = "PySCIPOpt-5.1.1-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:451e40f283aa95c31801d6b2a6e012ce54687fc96a1f2e0193ae6c9951fb0d9a"},
+    {file = "PySCIPOpt-5.1.1-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:92e29f21e37b442549cce797a16bf9b96cdbd9d10040d672a7fb0952781f594c"},
+    {file = "PySCIPOpt-5.1.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:22b852aba93f31f4bb6322474dfdde4a3d1b206f3c346a6d249746ed48ba053e"},
+    {file = "PySCIPOpt-5.1.1-cp311-cp311-win_amd64.whl", hash = "sha256:21078810ee17a809c0d3df10208c61e39c2d0e2a231478005d1c995b346fb0a7"},
+    {file = "PySCIPOpt-5.1.1-cp312-cp312-macosx_10_9_x86_64.whl", hash = "sha256:a3aa6564e72f961695915dfd320f9a511d6293a3c5d4c11ef91f09d9d4e49848"},
+    {file = "PySCIPOpt-5.1.1-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:7a42f1112fd438da9e6960717725bdd1142a8dcd1151a2891ee230253b516b32"},
+    {file = "PySCIPOpt-5.1.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:0335fae1e4f5005b248bedb390d9caef6a03e66c83df84505ab4e49b605de016"},
+    {file = "PySCIPOpt-5.1.1-cp312-cp312-win_amd64.whl", hash = "sha256:c2dd9e613cce0f8d9fe941da101c91bdb534386dd15c322d87434be0fb90b94b"},
+    {file = "PySCIPOpt-5.1.1-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:6c4b41176bc9f56024201f9a64c4e1c5af7369fbf2445c2b1eaa6d72bcb09c31"},
+    {file = "PySCIPOpt-5.1.1-cp38-cp38-macosx_11_0_arm64.whl", hash = "sha256:7548b0d93b9348a6bb023fa9e78f46e21a94cf827d5576d2917cf0b6dd6784d4"},
+    {file = "PySCIPOpt-5.1.1-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:99f9f7f1a207513fb04af9a16b41e28c74a5c47c1316dde67d2c33dd8c452a99"},
+    {file = "PySCIPOpt-5.1.1-cp38-cp38-win_amd64.whl", hash = "sha256:ed3dc6786b3753b94731c674f3f4d04f0ff4eddaa485cf068b5c5cf1d85e5b73"},
+    {file = "PySCIPOpt-5.1.1-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:11ca681893b7614d3f515e3ab691cc368c8590a4491410910f598114eac0e51a"},
+    {file = "PySCIPOpt-5.1.1-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:9cf7d731c741c877612f9905e5a2bf4fd727c197d348b0eb076b4966f24c8ea9"},
+    {file = "PySCIPOpt-5.1.1-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:b9ea3a669654bd3a48b108b582bffdb7e5e64b633fd4c5d58037523f634c839d"},
+    {file = "PySCIPOpt-5.1.1-cp39-cp39-win_amd64.whl", hash = "sha256:a00c8561026046eff46aab2abeb5c19431d53fd5a36139107418eaceba59f042"},
+    {file = "pyscipopt-5.1.1.tar.gz", hash = "sha256:7c7ebf2124b8cf0d35cd3fc65c255a226661dd360dd8bb6c24df2bef110f579c"},
+]
+
+[[package]]
 name = "pytest"
 version = "8.0.2"
 description = "pytest: simple powerful testing with Python"
@@ -1060,6 +1113,16 @@ files = [
 ]
 
 [[package]]
+name = "snakes"
+version = "0.9.33"
+description = "SNAKES is the Net Algebra Kit for Editors and Simulators"
+optional = false
+python-versions = "*"
+files = [
+    {file = "SNAKES-0.9.33.tar.gz", hash = "sha256:af8c3046bfedf3e088b6bf37d451ad6aeeb79716f68a6253e44ddbd1c7e250f3"},
+]
+
+[[package]]
 name = "tomli"
 version = "2.0.1"
 description = "A lil' TOML parser"
@@ -1127,4 +1190,4 @@ watchdog = ["watchdog (>=2.3)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "d212a6101edda018fc0f165e2a3c1ab59be4567baf1c949df3cbc72a1a0f614c"
+content-hash = "9209687205ee08f24223eb9e4b951afb9f73d828a6d3e288825db47879c63b40"
