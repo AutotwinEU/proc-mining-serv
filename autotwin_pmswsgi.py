@@ -5,7 +5,8 @@ import os
 from tempfile import TemporaryDirectory
 import autotwin_gmglib as gmg
 import autotwin_pnglib as png
-from werkzeug.exceptions import NotImplemented, HTTPException
+from autotwin_autlib import automata_learner as aut
+from werkzeug.exceptions import HTTPException
 
 LOG_FORMAT = "%(asctime)s %(message)s"
 DATE_FORMAT = "%Y-%m-%dT%H:%M:%S%z"
@@ -98,7 +99,17 @@ def create_automaton() -> Response:
     Returns:
         Response with model ID.
     """
-    raise NotImplemented()  # noqa: F901
+    request_data = request.get_data()
+    request_data = json.loads(request_data)
+    pov = request_data["model"]["pov"].upper()
+    interval = request_data["neo4j"]["interval"]
+    schema = request_data["name"].split(maxsplit=1)[0].lower()
+    version = request_data["version"] if "version" in request_data.keys() else ""
+    _, model_id = aut.start_automata_learning(
+        pov, interval[0], interval[1], schema, version
+    )
+    response_data = json.dumps({"model_id": model_id})
+    return Response(response_data, status=201, mimetype="application/json")
 
 
 @app.errorhandler(HTTPException)

@@ -222,25 +222,28 @@ The content types of the request and response for each API endpoint are both
 > None
 
 **Body**
-> None
+> Definition
+>
+> | Name                       | Type                    | Default      | Description                            |
+> |----------------------------|-------------------------|--------------|----------------------------------------|
+> | `name`                     | `string`                | `"System"`   | Name of the system to be discovered    |
+> | `version`                  | `string`                | `""`         | Version of the system to be discovered |
+> | `neo4j:interval`           | `array[number\|string]` | `[0.0, 0.0]` | Interval of the event log to be used   |
+> | `model:pov`                | `string`                | `"item"`     | Point of view to be focused on         |
 
 **Response**
-> Code: 501
+> Code: 201
 
 > Definition
 > 
-> | Name          | Type     | Description                   |
-> |---------------|----------|-------------------------------|
-> | `code`        | `string` | Code of the HTTP error        |
-> | `name`        | `string` | Name of the HTTP error        |
-> | `description` | `string` | Description of the HTTP error |
+> | Name       | Type     | Description                   |
+> |------------|----------|-------------------------------|
+> | `model_id` | `string` | ID of the generated automaton |
 
 > Example
 > ```json
 > {
->     "code": 501,
->     "name": "Not Implemented",
->     "description": "The server does not support the action requested by the browser."
+>     "model_id": "4:31f61bae-dad6-4cda-bb63-d4700847dea5:620887"
 > }
 > ```
 
