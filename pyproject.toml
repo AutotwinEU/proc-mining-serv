@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "autotwin_pmswsgi"
-version = "0.1.7"
+version = "0.1.8"
 description = "Process Mining Service WSGI for Auto-Twin"
 license = "BSD-3-Clause"
 authors = [
