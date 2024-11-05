@@ -131,7 +131,7 @@ The content types of the request and response for each API endpoint are both
 > Example
 > ```json
 > {
->     "model_id": "4:d44864fe-b050-4f74-8157-60d999e3580b:273316"
+>     "model_id": "4:d44864fe-b050-4f74-8157-60d999e3580b:620887"
 > }
 > ```
 
