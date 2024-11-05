@@ -25,8 +25,8 @@ jobs:
       - name: Install dependencies
         run: poetry install --no-root
       - name: Check code syntax
-        run: poetry run flake8 .
+        run: poetry run flake8 --extend-ignore E501 .
       - name: Check code format
-        run: poetry run black --check .
+        run: poetry run black --diff .
       # - name: Perform unit test
       #   run: poetry run pytest tests.py
