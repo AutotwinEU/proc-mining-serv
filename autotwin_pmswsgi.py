@@ -102,7 +102,7 @@ def create_automaton() -> Response:
     request_data = request.get_data()
     request_data = json.loads(request_data)
     pov = request_data["model"]["pov"].upper()
-    interval = request_data["neo4j"]["interval"]
+    interval = request_data["neo4j"]["filters"]["interval"]
     schema = request_data["name"].split(maxsplit=1)[0].lower()
     version = request_data["version"] if "version" in request_data.keys() else ""
     _, model_id = aut.start_automata_learning(

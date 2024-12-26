@@ -168,16 +168,21 @@ The content types of the request and response for each API endpoint are both
 **Body**
 > Definition
 >
-> | Name                       | Type                    | Default      | Description                                                       |
-> |----------------------------|-------------------------|--------------|-------------------------------------------------------------------|
-> | `name`                     | `string`                | `"System"`   | Name of the system to be discovered                               |
-> | `version`                  | `string`                | `""`         | Version of the system to be discovered                            |
-> | `neo4j:interval`           | `array[number\|string]` | `[0.0, 0.0]` | Interval of the event log to be used                              |
-> | `model:operation:io_ratio` | `number`                | `1.5`        | Minimum ratio of input to output for an ATTACH/COMPOSE operation  |
-> | `model:operation:co_ratio` | `number`                | `0.5`        | Minimum ratio of cross to output for an ATTACH/ORDINARY operation |
-> | `model:operation:oi_ratio` | `number`                | `1.5`        | Minimum ratio of output to input for a DETACH/DECOMPOSE operation |
-> | `model:operation:ci_ratio` | `number`                | `0.5`        | Minimum ratio of cross to input for a DETACH/ORDINARY operation   |
-> | `model:formula:ratio`      | `number`                | `0.0`        | Minimum ratio of a formula to the primary one                     |
+> | Name                       | Type                    | Default                                   | Description                                                       |
+> |----------------------------|-------------------------|-------------------------------------------|-------------------------------------------------------------------|
+> | `name`                     | `string`                | `"System"`                                | Name of the system to be discovered                               |
+> | `version`                  | `string`                | `""`                                      | Version of the system to be discovered                            |
+> | `neo4j:filters:interval`   | `array[number\|string]` | `[0.0, 0.0]`                              | Interval during which events are selected                         |
+> | `neo4j:filters:station`    | `array[string]`         | `[]`<sup id="pn-mk-1">[*](#pn-fn-1)</sup> | Set of stations at which events are selected                      |
+> | `neo4j:filters:family`     | `array[string]`         | `[]`<sup>[*](#pn-fn-1)</sup>              | Set of families for which events are selected                     |
+> | `neo4j:filters:type`       | `array[string]`         | `[]`<sup>[*](#pn-fn-1)</sup>              | Set of types for which events are selected                        |
+> | `model:operation:io_ratio` | `number`                | `1.5`                                     | Minimum ratio of input to output for an ATTACH/COMPOSE operation  |
+> | `model:operation:co_ratio` | `number`                | `0.5`                                     | Minimum ratio of cross to output for an ATTACH/ORDINARY operation |
+> | `model:operation:oi_ratio` | `number`                | `1.5`                                     | Minimum ratio of output to input for a DETACH/DECOMPOSE operation |
+> | `model:operation:ci_ratio` | `number`                | `0.5`                                     | Minimum ratio of cross to input for a DETACH/ORDINARY operation   |
+> | `model:formula:ratio`      | `number`                | `0.0`                                     | Minimum ratio of a formula to the primary one                     |
+>
+> <sup id="pn-fn-1">* An empty array refers to the universe of stations/families/types. [↩](#pn-mk-1)</sup>
 
 > Example
 > ```json
@@ -185,7 +190,15 @@ The content types of the request and response for each API endpoint are both
 >     "name": "Pizza Line",
 >     "version": "V4",
 >     "neo4j": {
->         "interval": [0, 500000000]
+>         "filters": {
+>             "interval": [
+>                 0,
+>                 500000000
+>             ],
+>             "station": [],
+>             "family": [],
+>             "type": []
+>         }
 >     },
 >     "model": {
 >         "operation": {
@@ -237,12 +250,31 @@ The content types of the request and response for each API endpoint are both
 **Body**
 > Definition
 >
-> | Name                       | Type                    | Default      | Description                            |
-> |----------------------------|-------------------------|--------------|----------------------------------------|
-> | `name`                     | `string`                | `"System"`   | Name of the system to be discovered    |
-> | `version`                  | `string`                | `""`         | Version of the system to be discovered |
-> | `neo4j:interval`           | `array[number\|string]` | `[0.0, 0.0]` | Interval of the event log to be used   |
-> | `model:pov`                | `string`                | `"item"`     | Point of view to be focused on         |
+> | Name                     | Type                    | Default      | Description                               |
+> |--------------------------|-------------------------|--------------|-------------------------------------------|
+> | `name`                   | `string`                | `"System"`   | Name of the system to be discovered       |
+> | `version`                | `string`                | `""`         | Version of the system to be discovered    |
+> | `neo4j:filters:interval` | `array[number\|string]` | `[0.0, 0.0]` | Interval during which events are selected |
+> | `model:pov`              | `string`                | `"item"`     | Point of view to be focused on            |
+
+> Example
+> ```json
+> {
+>     "name": "Pizza Line",
+>     "version": "V4",
+>     "neo4j": {
+>         "filters": {
+>             "interval": [
+>                 0,
+>                 500000000
+>             ]
+>         }
+>     },
+>     "model": {
+>         "pov": "item"
+>     }
+> }
+> ```
 
 **Response**
 > Code: 201
