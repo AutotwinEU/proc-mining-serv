@@ -25,7 +25,7 @@ python = "^3.10"
 Flask = "^3.0.2"
 Paste = "^3.7.1"
 waitress = "^3.0.0"
-autotwin_gmglib = "^0.1.8"
+autotwin_gmglib = "^0.1.9"
 autotwin_pnglib = "^0.1.2"
 autotwin_autlib = "^0.1.4"
 
