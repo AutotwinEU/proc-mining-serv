@@ -52,9 +52,82 @@ WSGI (see [Deployment](#deployment)).
 
 ## RESTful API
 The PMS WSGI listens HTTP requests on port `8080` and is accessible through a
-RESTful API that exposes the following endpoints for different types of models.
-The content types of the request and response for each API endpoint are both
-`application/json`.
+RESTful API that exposes the following endpoints for custom files and different
+types of models. The content types of the request and response for each API
+endpoint are either `application/octet-stream` or `application/json`.
+
+--------------------------------------------------------------------------------
+
+### API Endpoints for Custom Files
+
+<details>
+    <summary>
+        <code>POST</code>
+        <code><b>/custom-file/&lt;filename&gt;</b></code>
+        <code>(upload a custom file to the server)</code>
+    </summary>
+    <br/>
+
+**Parameters**
+> | Name       | Type     | Description                    |
+> |------------|----------|--------------------------------|
+> | `filename` | `string` | Name of the file in the server |
+
+**Body**
+> Content: `application/octet-stream`
+
+**Response**
+> Code: `201`
+
+> Content: `application/json` (Empty)
+
+</details>
+
+<details>
+    <summary>
+        <code>GET</code>
+        <code><b>/custom-file/&lt;filename&gt;</b></code>
+        <code>(download a custom file from the server)</code>
+    </summary>
+    <br/>
+
+**Parameters**
+> | Name       | Type     | Description                    |
+> |------------|----------|--------------------------------|
+> | `filename` | `string` | Name of the file in the server |
+
+**Body**
+> None
+
+**Response**
+> Code: `200`
+
+> Content: `application/octet-stream`
+
+</details>
+
+<details>
+    <summary>
+        <code>DELETE</code>
+        <code><b>/custom-file/&lt;filename&gt;</b></code>
+        <code>(delete a custom file in the server)</code>
+    </summary>
+    <br/>
+
+**Parameters**
+> | Name       | Type     | Description                    |
+> |------------|----------|--------------------------------|
+> | `filename` | `string` | Name of the file in the server |
+
+**Body**
+> None
+
+**Response**
+> Code: `200`
+
+> Content: `application/json` (Empty)
+
+</details>
 
 --------------------------------------------------------------------------------
 
@@ -72,7 +145,7 @@ The content types of the request and response for each API endpoint are both
 > None
 
 **Body**
-> Definition
+> Content: `application/json`
 >
 > | Name                       | Type                    | Default                                   | Description                                                       |
 > |----------------------------|-------------------------|-------------------------------------------|-------------------------------------------------------------------|
@@ -94,7 +167,7 @@ The content types of the request and response for each API endpoint are both
 >
 > <sup id="gm-fn-1">* An empty array refers to the universe of stations/families/types. [↩](#gm-mk-1)</sup>
 
-> Example
+> Example:
 > ```json
 > {
 >     "name": "Pizza Line",
@@ -133,15 +206,15 @@ The content types of the request and response for each API endpoint are both
 > ```
 
 **Response**
-> Code: 201
+> Code: `201`
 
-> Definition
-> 
+> Content: `application/json`
+>
 > | Name       | Type     | Description                     |
 > |------------|----------|---------------------------------|
 > | `model_id` | `string` | ID of the generated graph model |
 
-> Example
+> Example:
 > ```json
 > {
 >     "model_id": "4:31f61bae-dad6-4cda-bb63-d4700847dea5:620887"
@@ -166,7 +239,7 @@ The content types of the request and response for each API endpoint are both
 > None
 
 **Body**
-> Definition
+> Content: `application/json`
 >
 > | Name                       | Type                    | Default                                   | Description                                                       |
 > |----------------------------|-------------------------|-------------------------------------------|-------------------------------------------------------------------|
@@ -184,7 +257,7 @@ The content types of the request and response for each API endpoint are both
 >
 > <sup id="pn-fn-1">* An empty array refers to the universe of stations/families/types. [↩](#pn-mk-1)</sup>
 
-> Example
+> Example:
 > ```json
 > {
 >     "name": "Pizza Line",
@@ -215,15 +288,15 @@ The content types of the request and response for each API endpoint are both
 > ```
 
 **Response**
-> Code: 201
+> Code: `201`
 
-> Definition
-> 
+> Content: `application/json`
+>
 > | Name       | Type     | Description                   |
 > |------------|----------|-------------------------------|
 > | `model_id` | `string` | ID of the generated Petri net |
 
-> Example
+> Example:
 > ```json
 > {
 >     "model_id": "4:31f61bae-dad6-4cda-bb63-d4700847dea5:620887"
@@ -248,7 +321,7 @@ The content types of the request and response for each API endpoint are both
 > None
 
 **Body**
-> Definition
+> Content: `application/json`
 >
 > | Name                     | Type                    | Default      | Description                               |
 > |--------------------------|-------------------------|--------------|-------------------------------------------|
@@ -257,7 +330,7 @@ The content types of the request and response for each API endpoint are both
 > | `neo4j:filters:interval` | `array[number\|string]` | `[0.0, 0.0]` | Interval during which events are selected |
 > | `model:pov`              | `string`                | `"item"`     | Point of view to be focused on            |
 
-> Example
+> Example:
 > ```json
 > {
 >     "name": "Pizza Line",
@@ -277,15 +350,15 @@ The content types of the request and response for each API endpoint are both
 > ```
 
 **Response**
-> Code: 201
+> Code: `201`
 
-> Definition
-> 
+> Content: `application/json`
+>
 > | Name       | Type     | Description                   |
 > |------------|----------|-------------------------------|
 > | `model_id` | `string` | ID of the generated automaton |
 
-> Example
+> Example:
 > ```json
 > {
 >     "model_id": "4:31f61bae-dad6-4cda-bb63-d4700847dea5:620887"
