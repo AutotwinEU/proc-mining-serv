@@ -6,6 +6,7 @@ from tempfile import gettempdir, TemporaryDirectory
 import autotwin_gmglib as gmg
 import autotwin_pnglib as png
 from autotwin_autlib import automata_learner as aut
+import shutil
 from werkzeug.exceptions import HTTPException
 
 LOG_FORMAT = "%(asctime)s %(message)s"
@@ -90,11 +91,17 @@ def create_graph_model() -> Response:
     config["neo4j"]["username"] = NEO4J_USERNAME
     config["neo4j"]["password"] = NEO4J_PASSWORD
     config["neo4j"]["database"] = NEO4J_DATABASE
+    if config["data"]["clustering"]["path"] != "":
+        clustering_path = config["data"]["clustering"]["path"]
+        source_path = os.path.join(gettempdir(), clustering_path)
+        target_path = os.path.join(config["work_path"], clustering_path)
+        shutil.copy(source_path, target_path)
 
     gmg.import_log(config)
+    gmg.import_knowledge(config)
     log = gmg.load_log(config)
     model = gmg.generate_model(log, config)
-    model_id = gmg.export_model(model, config)
+    model_id = gmg.export_model(model, log, config)
     response_data = json.dumps({"model_id": model_id})
     return Response(response_data, status=201, mimetype="application/json")
 
@@ -149,7 +156,7 @@ def create_automaton() -> Response:
     request_data = request.get_data()
     request_data = json.loads(request_data)
     pov = request_data["model"]["pov"].upper()
-    interval = request_data["neo4j"]["filters"]["interval"]
+    interval = request_data["data"]["filters"]["interval"]
     schema = request_data["name"].split(maxsplit=1)[0].lower()
     version = request_data["version"] if "version" in request_data.keys() else ""
     _, model_id = aut.start_automata_learning(

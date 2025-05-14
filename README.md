@@ -151,28 +151,29 @@ endpoint are either `application/octet-stream` or `application/json`.
 > |----------------------------|-------------------------|-------------------------------------------|-------------------------------------------------------------------|
 > | `name`                     | `string`                | `"System"`                                | Name of the system to be discovered                               |
 > | `version`                  | `string`                | `""`                                      | Version of the system to be discovered                            |
-> | `neo4j:filters:interval`   | `array[number\|string]` | `[0.0, 0.0]`                              | Interval during which events are selected                         |
-> | `neo4j:filters:station`    | `array[string]`         | `[]`<sup id="gm-mk-1">[*](#gm-fn-1)</sup> | Set of stations at which events are selected                      |
-> | `neo4j:filters:family`     | `array[string]`         | `[]`<sup>[*](#gm-fn-1)</sup>              | Set of families for which events are selected                     |
-> | `neo4j:filters:type`       | `array[string]`         | `[]`<sup>[*](#gm-fn-1)</sup>              | Set of types for which events are selected                        |
+> | `data:clustering:path`     | `string`                | `""`<sup id="gm-mk-1">[*](#gm-fn-1)</sup> | Name of the clustering file to be used                            |
+> | `data:filters:interval`    | `array[number\|string]` | `[0.0, 0.0]`                              | Interval during which events are selected                         |
+> | `data:filters:station`     | `array[string]`         | `[]`<sup id="gm-mk-2">[†](#gm-fn-2)</sup> | Set of stations at which events are selected                      |
+> | `data:filters:family`      | `array[string]`         | `[]`<sup>[†](#gm-fn-2)</sup>              | Set of families for which events are selected                     |
+> | `data:filters:type`        | `array[string]`         | `[]`<sup>[†](#gm-fn-2)</sup>              | Set of types for which events are selected                        |
 > | `model:time_unit`          | `string`                | `"s"`                                     | Unified time unit of algorithm and model parameters               |
 > | `model:operation:io_ratio` | `number`                | `1.5`                                     | Minimum ratio of input to output for an ATTACH/COMPOSE operation  |
 > | `model:operation:co_ratio` | `number`                | `0.5`                                     | Minimum ratio of cross to output for an ATTACH/ORDINARY operation |
 > | `model:operation:oi_ratio` | `number`                | `1.5`                                     | Minimum ratio of output to input for a DETACH/DECOMPOSE operation |
 > | `model:operation:ci_ratio` | `number`                | `0.5`                                     | Minimum ratio of cross to input for a DETACH/ORDINARY operation   |
 > | `model:formula:ratio`      | `number`                | `0.0`                                     | Minimum ratio of a formula to the primary one                     |
-> | `model:delays:seize`       | `number\|string`        | `0.0`                                     | Maximum delay in seizing a queued part                            |
-> | `model:delays:release`     | `number\|string`        | `0.0`                                     | Maximum delay in releasing a blocked part                         |
+> | `model:delays:seize`       | `number`                | `0.0`                                     | Maximum delay in seizing a queued part                            |
+> | `model:delays:release`     | `number`                | `0.0`                                     | Maximum delay in releasing a blocked part                         |
 > | `model:cdf:points`         | `number`                | `100`                                     | Maximum number of points in a CDF                                 |
 >
-> <sup id="gm-fn-1">* An empty array refers to the universe of stations/families/types. [↩](#gm-mk-1)</sup>
+> <sup id="gm-fn-1">* An empty string disables the import of clustering information. [↩](#gm-mk-1)</sup><br><sup id="gm-fn-2">† An empty array refers to the universe of stations/families/types. [↩](#gm-mk-2)</sup>
 
 > Example:
 > ```json
 > {
 >     "name": "Pizza Line",
 >     "version": "V4",
->     "neo4j": {
+>     "data": {
 >         "filters": {
 >             "interval": [
 >                 0,
@@ -245,10 +246,10 @@ endpoint are either `application/octet-stream` or `application/json`.
 > |----------------------------|-------------------------|-------------------------------------------|-------------------------------------------------------------------|
 > | `name`                     | `string`                | `"System"`                                | Name of the system to be discovered                               |
 > | `version`                  | `string`                | `""`                                      | Version of the system to be discovered                            |
-> | `neo4j:filters:interval`   | `array[number\|string]` | `[0.0, 0.0]`                              | Interval during which events are selected                         |
-> | `neo4j:filters:station`    | `array[string]`         | `[]`<sup id="pn-mk-1">[*](#pn-fn-1)</sup> | Set of stations at which events are selected                      |
-> | `neo4j:filters:family`     | `array[string]`         | `[]`<sup>[*](#pn-fn-1)</sup>              | Set of families for which events are selected                     |
-> | `neo4j:filters:type`       | `array[string]`         | `[]`<sup>[*](#pn-fn-1)</sup>              | Set of types for which events are selected                        |
+> | `data:filters:interval`    | `array[number\|string]` | `[0.0, 0.0]`                              | Interval during which events are selected                         |
+> | `data:filters:station`     | `array[string]`         | `[]`<sup id="pn-mk-1">[*](#pn-fn-1)</sup> | Set of stations at which events are selected                      |
+> | `data:filters:family`      | `array[string]`         | `[]`<sup>[*](#pn-fn-1)</sup>              | Set of families for which events are selected                     |
+> | `data:filters:type`        | `array[string]`         | `[]`<sup>[*](#pn-fn-1)</sup>              | Set of types for which events are selected                        |
 > | `model:operation:io_ratio` | `number`                | `1.5`                                     | Minimum ratio of input to output for an ATTACH/COMPOSE operation  |
 > | `model:operation:co_ratio` | `number`                | `0.5`                                     | Minimum ratio of cross to output for an ATTACH/ORDINARY operation |
 > | `model:operation:oi_ratio` | `number`                | `1.5`                                     | Minimum ratio of output to input for a DETACH/DECOMPOSE operation |
@@ -262,7 +263,7 @@ endpoint are either `application/octet-stream` or `application/json`.
 > {
 >     "name": "Pizza Line",
 >     "version": "V4",
->     "neo4j": {
+>     "data": {
 >         "filters": {
 >             "interval": [
 >                 0,
@@ -323,19 +324,19 @@ endpoint are either `application/octet-stream` or `application/json`.
 **Body**
 > Content: `application/json`
 >
-> | Name                     | Type                    | Default      | Description                               |
-> |--------------------------|-------------------------|--------------|-------------------------------------------|
-> | `name`                   | `string`                | `"System"`   | Name of the system to be discovered       |
-> | `version`                | `string`                | `""`         | Version of the system to be discovered    |
-> | `neo4j:filters:interval` | `array[number\|string]` | `[0.0, 0.0]` | Interval during which events are selected |
-> | `model:pov`              | `string`                | `"item"`     | Point of view to be focused on            |
+> | Name                    | Type                    | Default      | Description                               |
+> |-------------------------|-------------------------|--------------|-------------------------------------------|
+> | `name`                  | `string`                | `"System"`   | Name of the system to be discovered       |
+> | `version`               | `string`                | `""`         | Version of the system to be discovered    |
+> | `data:filters:interval` | `array[number\|string]` | `[0.0, 0.0]` | Interval during which events are selected |
+> | `model:pov`             | `string`                | `"item"`     | Point of view to be focused on            |
 
 > Example:
 > ```json
 > {
 >     "name": "Pizza Line",
 >     "version": "V4",
->     "neo4j": {
+>     "data": {
 >         "filters": {
 >             "interval": [
 >                 0,

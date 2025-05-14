@@ -27,4 +27,5 @@ RUN chown -R admin /proc-mining-serv
 USER admin
 EXPOSE 8080
 ENV MPLCONFIGDIR="matplotlib"
+SHELL ["/bin/sh", "-c"]
 CMD echo "autotwin_pmswsgi:wsgi" | xargs sudo -E waitress-serve > access.log 2>&1
