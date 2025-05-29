@@ -20,13 +20,13 @@ skg_connector = ">=0.1.15,<0.2.0"
 
 [[package]]
 name = "autotwin-gmglib"
-version = "0.1.10"
+version = "0.1.11"
 description = "Graph Model Generation Library for Auto-Twin"
 optional = false
 python-versions = "<4.0,>=3.10"
 files = [
-    {file = "autotwin_gmglib-0.1.10-py3-none-any.whl", hash = "sha256:bdfc6bca7a0c8aba7468c77affef73cce5f10b6fb6cd32be0946ddad6503f3d1"},
-    {file = "autotwin_gmglib-0.1.10.tar.gz", hash = "sha256:4fb125c6ee82c03b33dbe80882391ac3e6d8528c8dae48bd6ea1f1d36c800f92"},
+    {file = "autotwin_gmglib-0.1.11-py3-none-any.whl", hash = "sha256:c79f3070aca4e408b3be5d66fec99f7c1ce1de9d5109972afceb8e390640cb5e"},
+    {file = "autotwin_gmglib-0.1.11.tar.gz", hash = "sha256:48471a07c65e262ad7f7fc4b6a3444fec1efa26d3c3ddd84188f5372c53e5ae1"},
 ]
 
 [package.dependencies]
@@ -1351,4 +1351,4 @@ watchdog = ["watchdog (>=2.3)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "026fdb11bcb7c3ae03745b73e90725d9ff5423f43d9ca68fcb2fd18f50947633"
+content-hash = "e9e5516f7757778a24a8aaecd1584bfb5c72de7e779cc683dde2c41ba971d330"
