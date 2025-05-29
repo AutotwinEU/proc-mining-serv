@@ -44,11 +44,32 @@ To enable containerization, the PMS WSGI is also released as a Docker image,
 Docker engine is running on your machine. Deploying the PMS WSGI on a Docker
 container named `proc-mining-serv` can be done via a single command.
 
-    docker run --detach --env NEO4J_URI=<NEO4J_URI> --env NEO4J_USERNAME=<NEO4J_USERNAME> --env NEO4J_PASSWORD=<NEO4J_PASSWORD> --env NEO4J_DATABASE=<NEO4J_DATABASE> --name proc-mining-serv --pull always ghcr.io/autotwineu/proc-mining-serv
+Windows:
+
+    docker run --detach ^
+    --env NEO4J_URI=<NEO4J_URI> ^
+    --env NEO4J_USERNAME=<NEO4J_USERNAME> ^
+    --env NEO4J_PASSWORD=<NEO4J_PASSWORD> ^
+    --env NEO4J_DATABASE=<NEO4J_DATABASE> ^
+    --volume <CLUSTERING_DIRECTORY>:/proc-mining-serv/clusterings ^
+    --name proc-mining-serv ^
+    --pull always ghcr.io/autotwineu/proc-mining-serv
+
+Linux:
+
+    docker run --detach \
+    --env NEO4J_URI=<NEO4J_URI> \
+    --env NEO4J_USERNAME=<NEO4J_USERNAME> \
+    --env NEO4J_PASSWORD=<NEO4J_PASSWORD> \
+    --env NEO4J_DATABASE=<NEO4J_DATABASE> \
+    --volume <CLUSTERING_DIRECTORY>:/proc-mining-serv/clusterings \
+    --name proc-mining-serv \
+    --pull always ghcr.io/autotwineu/proc-mining-serv
 
 `<NEO4J_URI>`, `<NEO4J_USERNAME>`, `<NEO4J_PASSWORD>` and `<NEO4J_DATABASE>`
 correspond to the values of the four environment variables required by the PMS
-WSGI (see [Deployment](#deployment)).
+WSGI (see [Deployment](#deployment)). `<CLUSTERING_DIRECTORY>` is the host
+directory where clustering files are located.
 
 ## RESTful API
 The PMS WSGI listens HTTP requests on port `8080` and is accessible through a

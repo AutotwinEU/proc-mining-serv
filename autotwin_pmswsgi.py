@@ -26,6 +26,8 @@ NEO4J_USERNAME = os.environ["NEO4J_USERNAME"]
 NEO4J_PASSWORD = os.environ["NEO4J_PASSWORD"]
 NEO4J_DATABASE = os.environ["NEO4J_DATABASE"]
 
+CLUSTERING_DIRECTORY = "clusterings"
+
 
 @app.post("/custom-file/<filename>")
 def upload_file(filename: str) -> Response:
@@ -93,7 +95,7 @@ def create_graph_model() -> Response:
     config["neo4j"]["database"] = NEO4J_DATABASE
     if config["data"]["clustering"]["path"] != "":
         clustering_path = config["data"]["clustering"]["path"]
-        source_path = os.path.join(gettempdir(), clustering_path)
+        source_path = os.path.join(CLUSTERING_DIRECTORY, clustering_path)
         target_path = os.path.join(config["work_path"], clustering_path)
         shutil.copy(source_path, target_path)
 
