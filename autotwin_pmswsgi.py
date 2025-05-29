@@ -1,8 +1,8 @@
 import logging
-from flask import Flask, request, send_file, json, Response
+from flask import Flask, request, json, Response
 from paste.translogger import TransLogger
 import os
-from tempfile import gettempdir, TemporaryDirectory
+from tempfile import TemporaryDirectory
 import autotwin_gmglib as gmg
 import autotwin_pnglib as png
 from autotwin_autlib import automata_learner as aut
@@ -27,53 +27,6 @@ NEO4J_PASSWORD = os.environ["NEO4J_PASSWORD"]
 NEO4J_DATABASE = os.environ["NEO4J_DATABASE"]
 
 CLUSTERING_DIRECTORY = "clusterings"
-
-
-@app.post("/custom-file/<filename>")
-def upload_file(filename: str) -> Response:
-    """Upload a custom file to the server.
-
-    Args:
-        filename: Filename.
-
-    Returns:
-        Response with nothing.
-    """
-    request_data = request.get_data()
-    path = os.path.join(gettempdir(), filename)
-    with open(path, "wb") as file:
-        file.write(request_data)
-    return Response(status=201, mimetype="application/json")
-
-
-@app.get("/custom-file/<filename>")
-def download_file(filename: str) -> Response:
-    """Download a custom file from the server.
-
-    Args:
-        filename: Filename.
-
-    Returns:
-        Response with file stream.
-    """
-    path = os.path.join(gettempdir(), filename)
-    return send_file(path, mimetype="application/octet-stream", as_attachment=True)
-
-
-@app.delete("/custom-file/<filename>")
-def delete_file(filename: str) -> Response:
-    """Delete a custom file in the server.
-
-    Args:
-        filename: Filename.
-
-    Returns:
-        Response with nothing.
-    """
-    path = os.path.join(gettempdir(), filename)
-    if os.path.exists(path):
-        os.remove(path)
-    return Response(status=200, mimetype="application/json")
 
 
 @app.post("/graph-model")

@@ -73,82 +73,9 @@ directory where clustering files are located.
 
 ## RESTful API
 The PMS WSGI listens HTTP requests on port `8080` and is accessible through a
-RESTful API that exposes the following endpoints for custom files and different
-types of models. The content types of the request and response for each API
-endpoint are either `application/octet-stream` or `application/json`.
-
---------------------------------------------------------------------------------
-
-### API Endpoints for Custom Files
-
-<details>
-    <summary>
-        <code>POST</code>
-        <code><b>/custom-file/&lt;filename&gt;</b></code>
-        <code>(upload a custom file to the server)</code>
-    </summary>
-    <br/>
-
-**Parameters**
-> | Name       | Type     | Description                    |
-> |------------|----------|--------------------------------|
-> | `filename` | `string` | Name of the file in the server |
-
-**Body**
-> Content: `application/octet-stream`
-
-**Response**
-> Code: `201`
-
-> Content: `application/json` (Empty)
-
-</details>
-
-<details>
-    <summary>
-        <code>GET</code>
-        <code><b>/custom-file/&lt;filename&gt;</b></code>
-        <code>(download a custom file from the server)</code>
-    </summary>
-    <br/>
-
-**Parameters**
-> | Name       | Type     | Description                    |
-> |------------|----------|--------------------------------|
-> | `filename` | `string` | Name of the file in the server |
-
-**Body**
-> None
-
-**Response**
-> Code: `200`
-
-> Content: `application/octet-stream`
-
-</details>
-
-<details>
-    <summary>
-        <code>DELETE</code>
-        <code><b>/custom-file/&lt;filename&gt;</b></code>
-        <code>(delete a custom file in the server)</code>
-    </summary>
-    <br/>
-
-**Parameters**
-> | Name       | Type     | Description                    |
-> |------------|----------|--------------------------------|
-> | `filename` | `string` | Name of the file in the server |
-
-**Body**
-> None
-
-**Response**
-> Code: `200`
-
-> Content: `application/json` (Empty)
-
-</details>
+RESTful API that exposes the following endpoints for different types of models.
+The content types of the request and response for each API endpoint are both
+`application/json`.
 
 --------------------------------------------------------------------------------
 
