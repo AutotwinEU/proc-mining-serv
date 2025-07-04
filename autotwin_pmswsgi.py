@@ -53,7 +53,7 @@ def create_graph_model() -> Response:
         shutil.copy(source_path, target_path)
 
     gmg.import_log(config)
-    gmg.import_knowledge(config)
+    gmg.import_config(config)
     log = gmg.load_log(config)
     model = gmg.generate_model(log, config)
     model_id = gmg.export_model(model, log, config)
