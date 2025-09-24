@@ -105,6 +105,7 @@ The content types of the request and response for each API endpoint are both
 > | `data:filters:station`     | `array[string]`         | `[]`<sup id="gm-mk-3">[‡](#gm-fn-3)</sup> | Set of stations at which events are selected                      |
 > | `data:filters:family`      | `array[string]`         | `[]`<sup>[‡](#gm-fn-3)</sup>              | Set of families for which events are selected                     |
 > | `data:filters:type`        | `array[string]`         | `[]`<sup>[‡](#gm-fn-3)</sup>              | Set of types for which events are selected                        |
+> | `data:usage`               | `number`                | `0.5`                                     | Minimum data usage to be ensured                                  |
 > | `model:time_unit`          | `string`                | `"s"`                                     | Unified time unit of algorithm and model parameters               |
 > | `model:operation:io_ratio` | `number`                | `1.5`                                     | Minimum ratio of input to output for an ATTACH/COMPOSE operation  |
 > | `model:operation:co_ratio` | `number`                | `0.5`                                     | Minimum ratio of cross to output for an ATTACH/ORDINARY operation |
@@ -113,6 +114,7 @@ The content types of the request and response for each API endpoint are both
 > | `model:formula:ratio`      | `number`                | `0.0`                                     | Minimum ratio of a formula to the primary one                     |
 > | `model:delays:seize`       | `number`                | `0.0`                                     | Maximum delay in seizing a queued part                            |
 > | `model:delays:release`     | `number`                | `0.0`                                     | Maximum delay in releasing a blocked part                         |
+> | `model:cdf:replace_pts`    | `boolean`               | `false`                                   | Replace or drop invalid samples in a processing time CDF          |
 > | `model:cdf:points`         | `number`                | `100`                                     | Maximum number of points in a CDF                                 |
 >
 > <sup id="gm-fn-1">* An empty string disables the import of clustering information. [↩](#gm-mk-1)</sup><br><sup id="gm-fn-2">† An empty string ignores parts not belonging to any clusters. [↩](#gm-mk-2)</sup><br><sup id="gm-fn-3">‡ An empty array refers to the universe of stations/families/types. [↩](#gm-mk-3)</sup>
@@ -131,7 +133,8 @@ The content types of the request and response for each API endpoint are both
 >             "station": [],
 >             "family": [],
 >             "type": []
->         }
+>         },
+>         "usage": 0.5
 >     },
 >     "model": {
 >         "time_unit": "ms",
@@ -149,6 +152,7 @@ The content types of the request and response for each API endpoint are both
 >             "release": 0
 >         },
 >         "cdf": {
+>             "replace_pts": false,
 >             "points": 100
 >         }
 >     }
@@ -199,6 +203,7 @@ The content types of the request and response for each API endpoint are both
 > | `data:filters:station`     | `array[string]`         | `[]`<sup id="pn-mk-1">[*](#pn-fn-1)</sup> | Set of stations at which events are selected                      |
 > | `data:filters:family`      | `array[string]`         | `[]`<sup>[*](#pn-fn-1)</sup>              | Set of families for which events are selected                     |
 > | `data:filters:type`        | `array[string]`         | `[]`<sup>[*](#pn-fn-1)</sup>              | Set of types for which events are selected                        |
+> | `data:usage`               | `number`                | `0.5`                                     | Minimum data usage to be ensured                                  |
 > | `model:operation:io_ratio` | `number`                | `1.5`                                     | Minimum ratio of input to output for an ATTACH/COMPOSE operation  |
 > | `model:operation:co_ratio` | `number`                | `0.5`                                     | Minimum ratio of cross to output for an ATTACH/ORDINARY operation |
 > | `model:operation:oi_ratio` | `number`                | `1.5`                                     | Minimum ratio of output to input for a DETACH/DECOMPOSE operation |
@@ -221,7 +226,8 @@ The content types of the request and response for each API endpoint are both
 >             "station": [],
 >             "family": [],
 >             "type": []
->         }
+>         },
+>         "usage": 0.5
 >     },
 >     "model": {
 >         "operation": {
