@@ -115,6 +115,7 @@ The content types of the request and response for each API endpoint are both
 > | `model:delays:seize`       | `number`                | `0.0`                                     | Maximum delay in seizing a queued part                            |
 > | `model:delays:release`     | `number`                | `0.0`                                     | Maximum delay in releasing a blocked part                         |
 > | `model:cdf:replace_pts`    | `boolean`               | `false`                                   | Replace or drop invalid samples in a processing time CDF          |
+> | `model:cdf:replace_tts`    | `boolean`               | `false`                                   | Replace or drop invalid samples in a transfer time CDF            |
 > | `model:cdf:points`         | `number`                | `100`                                     | Maximum number of points in a CDF                                 |
 >
 > <sup id="gm-fn-1">* An empty string disables the import of clustering information. [↩](#gm-mk-1)</sup><br><sup id="gm-fn-2">† An empty string ignores parts not belonging to any clusters. [↩](#gm-mk-2)</sup><br><sup id="gm-fn-3">‡ An empty array refers to the universe of stations/families/types. [↩](#gm-mk-3)</sup>
@@ -153,6 +154,7 @@ The content types of the request and response for each API endpoint are both
 >         },
 >         "cdf": {
 >             "replace_pts": false,
+>             "replace_tts": false,
 >             "points": 100
 >         }
 >     }
