@@ -1,12 +1,16 @@
 import logging
-from flask import Flask, request, json, Response
+from flask import Flask, request, json, Response, abort, send_file
 from paste.translogger import TransLogger
 import os
 from tempfile import TemporaryDirectory
 import autotwin_gmglib as gmg
 import autotwin_pnglib as png
 from autotwin_autlib import automata_learner as aut
+from autotwin_bselib import soc_est as bse
 import shutil
+import io
+import zipfile
+import pandas
 from werkzeug.exceptions import HTTPException
 
 LOG_FORMAT = "%(asctime)s %(message)s"
@@ -27,6 +31,7 @@ NEO4J_PASSWORD = os.environ["NEO4J_PASSWORD"]
 NEO4J_DATABASE = os.environ["NEO4J_DATABASE"]
 
 CLUSTERING_DIRECTORY = "clusterings"
+BATTERY_MODEL_DIRECTORY = "battery_models"
 
 
 @app.post("/graph-model")
@@ -119,6 +124,88 @@ def create_automaton() -> Response:
     )
     response_data = json.dumps({"model_id": model_id})
     return Response(response_data, status=201, mimetype="application/json")
+
+
+@app.get("/api/v1/projects/ids")
+def get_bm_project_ids() -> Response:
+    """Get the project IDs of battery models.
+
+    Returns:
+        Response with project IDs.
+    """
+    rack_ids = bse.get_rack_ids()
+    response_data = json.dumps(
+        [{"projectUUID": id_, "scenarioUUID": id_} for id_ in rack_ids]
+    )
+    return Response(response_data, status=200, mimetype="application/json")
+
+
+@app.get("/api/v1/scenarios/<scenario_id>/scenario-executions")
+def get_bm_execution_ids(scenario_id) -> Response:
+    """Get the execution IDs of a battery model.
+
+    Args:
+        scenario_id: Scenario ID.
+
+    Returns:
+        Response with execution IDs.
+    """
+    rack_ids = bse.get_rack_ids()
+    if scenario_id not in rack_ids:
+        abort(404)
+    response_data = json.dumps([{"uuid": scenario_id}])
+    return Response(response_data, status=200, mimetype="application/json")
+
+
+@app.get("/api/v1/scenario-executions/<execution_id>/parameters")
+def get_bm_parameters(execution_id) -> Response:
+    """Get the parameters of a battery model.
+
+    Args:
+        execution_id: Execution ID.
+
+    Returns:
+        Response with parameters.
+    """
+    rack_ids = bse.get_rack_ids()
+    if execution_id not in rack_ids:
+        abort(404)
+    response_data = json.dumps(list())
+    return Response(response_data, status=200, mimetype="application/json")
+
+
+@app.get("/api/v1/scenarios/<scenario_id>/scenario-executions/<execution_id>")
+def get_bm_estimation(scenario_id, execution_id) -> Response:
+    """Get SoC estimation by a battery model.
+
+    Args:
+        scenario_id: Scenario ID.
+        execution_id: Execution ID.
+
+    Returns:
+        Response with SoC estimation.
+    """
+    rack_ids = bse.get_rack_ids()
+    if scenario_id != execution_id or scenario_id not in rack_ids:
+        abort(404)
+    request_data = request.get_data()
+    request_data = json.loads(request_data)
+    interval = request_data["interval"]
+    result = bse.run_soc_period(
+        scenario_id, start_ms=interval[0], end_ms=interval[1],
+        model_dir=BATTERY_MODEL_DIRECTORY
+    )
+    buffer = io.BytesIO()
+    with zipfile.ZipFile(buffer, mode="w", compression=zipfile.ZIP_DEFLATED) as file:
+        frame = pandas.DataFrame(
+            {"timestamp": result["time_axis"], "soc": result["soc_estimated"]}
+        )
+        file.writestr("out.csv", frame.to_csv(index=False))
+    buffer.seek(0)
+    return send_file(
+        buffer, mimetype="application/octet-stream", as_attachment=True,
+        download_name="out.zip"
+    )
 
 
 @app.errorhandler(HTTPException)

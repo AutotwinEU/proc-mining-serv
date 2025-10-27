@@ -7,6 +7,8 @@
 The processing mining service (PMS) WSGI implements a RESTful API that invokes
 different system discovery modules to automatically create, update and delete
 graph models, Petri nets and automata in a system knowledge graph (SKG).
+Besides, the RESTful API enables the execution of a battery model for estimating
+the state of charge (SoC) across a time period.
 
 ## Installation
 To facilitate installation, the PMS WSGI is released as a Python module,
@@ -52,6 +54,7 @@ Windows:
     --env NEO4J_PASSWORD=<NEO4J_PASSWORD> ^
     --env NEO4J_DATABASE=<NEO4J_DATABASE> ^
     --volume <CLUSTERING_DIRECTORY>:/proc-mining-serv/clusterings ^
+    --volume <BATTERY_MODEL_DIRECTORY>:/proc-mining-serv/battery_models ^
     --name proc-mining-serv ^
     --pull always ghcr.io/autotwineu/proc-mining-serv
 
@@ -63,19 +66,21 @@ Linux:
     --env NEO4J_PASSWORD=<NEO4J_PASSWORD> \
     --env NEO4J_DATABASE=<NEO4J_DATABASE> \
     --volume <CLUSTERING_DIRECTORY>:/proc-mining-serv/clusterings \
+    --volume <BATTERY_MODEL_DIRECTORY>:/proc-mining-serv/battery_models \
     --name proc-mining-serv \
     --pull always ghcr.io/autotwineu/proc-mining-serv
 
 `<NEO4J_URI>`, `<NEO4J_USERNAME>`, `<NEO4J_PASSWORD>` and `<NEO4J_DATABASE>`
 correspond to the values of the four environment variables required by the PMS
-WSGI (see [Deployment](#deployment)). `<CLUSTERING_DIRECTORY>` is the host
-directory where clustering files are located.
+WSGI (see [Deployment](#deployment)). `<CLUSTERING_DIRECTORY>` and
+`<BATTERY_MODEL_DIRECTORY>` are host directories where clustering and battery
+model files are located.
 
 ## RESTful API
 The PMS WSGI listens HTTP requests on port `8080` and is accessible through a
 RESTful API that exposes the following endpoints for different types of models.
-The content types of the request and response for each API endpoint are both
-`application/json`.
+The content types of the request and response for each API endpoint are either
+`application/json` or `application/octet-stream`.
 
 --------------------------------------------------------------------------------
 
@@ -95,7 +100,7 @@ The content types of the request and response for each API endpoint are both
 **Body**
 > Content: `application/json`
 >
-> | Name                       | Type                    | Default                                   | Description                                                       |
+> | Key                        | Type                    | Default                                   | Description                                                       |
 > |----------------------------|-------------------------|-------------------------------------------|-------------------------------------------------------------------|
 > | `name`                     | `string`                | `"System"`                                | Name of the system to be discovered                               |
 > | `version`                  | `string`                | `""`                                      | Version of the system to be discovered                            |
@@ -166,7 +171,7 @@ The content types of the request and response for each API endpoint are both
 
 > Content: `application/json`
 >
-> | Name       | Type     | Description                     |
+> | Key        | Type     | Description                     |
 > |------------|----------|---------------------------------|
 > | `model_id` | `string` | ID of the generated graph model |
 
@@ -197,7 +202,7 @@ The content types of the request and response for each API endpoint are both
 **Body**
 > Content: `application/json`
 >
-> | Name                       | Type                    | Default                                   | Description                                                       |
+> | Key                        | Type                    | Default                                   | Description                                                       |
 > |----------------------------|-------------------------|-------------------------------------------|-------------------------------------------------------------------|
 > | `name`                     | `string`                | `"System"`                                | Name of the system to be discovered                               |
 > | `version`                  | `string`                | `""`                                      | Version of the system to be discovered                            |
@@ -250,7 +255,7 @@ The content types of the request and response for each API endpoint are both
 
 > Content: `application/json`
 >
-> | Name       | Type     | Description                   |
+> | Key        | Type     | Description                   |
 > |------------|----------|-------------------------------|
 > | `model_id` | `string` | ID of the generated Petri net |
 
@@ -281,7 +286,7 @@ The content types of the request and response for each API endpoint are both
 **Body**
 > Content: `application/json`
 >
-> | Name                    | Type                    | Default      | Description                               |
+> | Key                     | Type                    | Default      | Description                               |
 > |-------------------------|-------------------------|--------------|-------------------------------------------|
 > | `name`                  | `string`                | `"System"`   | Name of the system to be discovered       |
 > | `version`               | `string`                | `""`         | Version of the system to be discovered    |
@@ -312,7 +317,7 @@ The content types of the request and response for each API endpoint are both
 
 > Content: `application/json`
 >
-> | Name       | Type     | Description                   |
+> | Key        | Type     | Description                   |
 > |------------|----------|-------------------------------|
 > | `model_id` | `string` | ID of the generated automaton |
 
@@ -322,6 +327,152 @@ The content types of the request and response for each API endpoint are both
 >     "model_id": "4:31f61bae-dad6-4cda-bb63-d4700847dea5:620887"
 > }
 > ```
+
+</details>
+
+--------------------------------------------------------------------------------
+
+### API Endpoints for Battery Models
+
+<details>
+    <summary>
+        <code>GET</code>
+        <code><b>/api/v1/projects/ids</b></code>
+        <code>(get the project IDs of battery models)</code>
+    </summary>
+    <br/>
+
+**Parameters**
+> None
+
+**Body**
+> None
+
+**Response**
+> Code: `200`
+
+> Content: `application/json`
+>
+> | Key              | Type     | Description                             |
+> |------------------|----------|-----------------------------------------|
+> | `i:projectUUID`  | `string` | Project ID of the `i`-th battery model  |
+> | `i:scenarioUUID` | `string` | Scenario ID of the `i`-th battery model |
+
+> Example:
+> ```json
+> [
+>     {
+>         "projectUUID": "31f61bae-dad6-4cda-bb63-d4700847dea5",
+>         "scenarioUUID": "31f61bae-dad6-4cda-bb63-d4700847dea5"
+>     }
+> ]
+> ```
+
+</details>
+
+<details>
+    <summary>
+        <code>GET</code>
+        <code><b>/api/v1/scenarios/{scenario_id}/scenario-executions</b></code>
+        <code>(get the execution IDs of a battery model)</code>
+    </summary>
+    <br/>
+
+**Parameters**
+> | Name          | Type     | Description                      |
+> |---------------|----------|----------------------------------|
+> | `scenario_id` | `string` | Scenario ID of the battery model |
+
+**Body**
+> None
+
+**Response**
+> Code: `200`
+
+> Content: `application/json`
+>
+> | Key      | Type     | Description                              |
+> |----------|----------|------------------------------------------|
+> | `i:uuid` | `string` | `i`-th execution ID of the battery model |
+
+> Example:
+> ```json
+> [
+>     {
+>         "uuid": "31f61bae-dad6-4cda-bb63-d4700847dea5"
+>     }
+> ]
+> ```
+
+</details>
+
+<details>
+    <summary>
+        <code>GET</code>
+        <code><b>/api/v1/scenario-executions/{execution_id}/parameters</b></code>
+        <code>(get the parameters of a battery model)</code>
+    </summary>
+    <br/>
+
+**Parameters**
+> | Name           | Type     | Description                       |
+> |----------------|----------|-----------------------------------|
+> | `execution_id` | `string` | Execution ID of the battery model |
+
+**Body**
+> None
+
+**Response**
+> Code: `200`
+
+> Content: `application/json`
+>
+> | Key | Type     | Description                           |
+> |-----|----------|---------------------------------------|
+> | `i` | `object` | `i`-th parameter of the battery model |
+
+> Example:
+> ```json
+> []
+> ```
+
+</details>
+
+<details>
+    <summary>
+        <code>GET</code>
+        <code><b>/api/v1/scenarios/{scenario_id}/scenario-executions/{execution_id}</b></code>
+        <code>(get SoC estimation by a battery model)</code>
+    </summary>
+    <br/>
+
+**Parameters**
+> | Name           | Type     | Description                       |
+> |----------------|----------|-----------------------------------|
+> | `scenario_id`  | `string` | Scenario ID of the battery model  |
+> | `execution_id` | `string` | Execution ID of the battery model |
+
+**Body**
+> Content: `application/json`
+>
+> | Key                     | Type                    | Default      | Description                            |
+> |-------------------------|-------------------------|--------------|----------------------------------------|
+> | `interval`              | `array[number]`         | `[0, 0]`     | Interval during which SoC is estimated |
+
+> Example:
+> ```json
+> {
+>     "interval": [
+>         0,
+>         9223372036854775807
+>     ]
+> }
+> ```
+
+**Response**
+> Code: `200`
+
+> Content: `application/octet-stream`
 
 </details>
 
