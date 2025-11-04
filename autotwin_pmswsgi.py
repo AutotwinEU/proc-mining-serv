@@ -31,7 +31,7 @@ NEO4J_PASSWORD = os.environ["NEO4J_PASSWORD"]
 NEO4J_DATABASE = os.environ["NEO4J_DATABASE"]
 
 CLUSTERING_DIRECTORY = "clusterings"
-BATTERY_MODEL_DIRECTORY = "battery_models"
+BATTERY_MODEL_DIRECTORY = "battery-models"
 
 
 @app.post("/graph-model")
@@ -140,20 +140,15 @@ def get_bm_project_ids() -> Response:
     return Response(response_data, status=200, mimetype="application/json")
 
 
-@app.get("/api/v1/scenarios/<scenario_id>/scenario-executions")
-def get_bm_execution_ids(scenario_id) -> Response:
-    """Get the execution IDs of a battery model.
-
-    Args:
-        scenario_id: Scenario ID.
+@app.get("/api/v1/scenario-executions/ids")
+def get_bm_execution_ids() -> Response:
+    """Get the execution IDs of battery models.
 
     Returns:
         Response with execution IDs.
     """
     rack_ids = bse.get_rack_ids()
-    if scenario_id not in rack_ids:
-        abort(404)
-    response_data = json.dumps([{"uuid": scenario_id}])
+    response_data = json.dumps([{"uuid": id_} for id_ in rack_ids])
     return Response(response_data, status=200, mimetype="application/json")
 
 
@@ -174,33 +169,76 @@ def get_bm_parameters(execution_id) -> Response:
     return Response(response_data, status=200, mimetype="application/json")
 
 
-@app.get("/api/v1/scenarios/<scenario_id>/scenario-executions/<execution_id>")
-def get_bm_estimation(scenario_id, execution_id) -> Response:
+@app.get("/api/v1/scenario-executions/<execution_id>/json")
+def get_bm_soc_json(execution_id) -> Response:
     """Get SoC estimation by a battery model.
 
     Args:
-        scenario_id: Scenario ID.
         execution_id: Execution ID.
 
     Returns:
         Response with SoC estimation.
     """
     rack_ids = bse.get_rack_ids()
-    if scenario_id != execution_id or scenario_id not in rack_ids:
+    if execution_id not in rack_ids:
         abort(404)
     request_data = request.get_data()
     request_data = json.loads(request_data)
     interval = request_data["interval"]
     result = bse.run_soc_period(
-        scenario_id, start_ms=interval[0], end_ms=interval[1],
+        execution_id, start_ms=interval[0], end_ms=interval[1],
+        model_dir=BATTERY_MODEL_DIRECTORY
+    )
+    response_data = json.dumps(
+        {
+            "component": "C12",
+            "data": [
+                {
+                    "name": "Battery DT SoC",
+                    "description": "Battery DT SoC results",
+                    "type": "chart",
+                    "payload": json.dumps(
+                        [
+                            {
+                                "time": result["time_axis"][x],
+                                "value": result["soc_estimated"][x],
+                            }
+                            for x in range(len(result["time_axis"]))
+                        ]
+                    ),
+                }
+            ],
+        }
+    )
+    return Response(response_data, status=200, mimetype="application/json")
+
+
+@app.get("/api/v1/scenario-executions/<execution_id>/out")
+def get_bm_soc_out(execution_id) -> Response:
+    """Get SoC estimation by a battery model.
+
+    Args:
+        execution_id: Execution ID.
+
+    Returns:
+        Response with SoC estimation.
+    """
+    rack_ids = bse.get_rack_ids()
+    if execution_id not in rack_ids:
+        abort(404)
+    request_data = request.get_data()
+    request_data = json.loads(request_data)
+    interval = request_data["interval"]
+    result = bse.run_soc_period(
+        execution_id, start_ms=interval[0], end_ms=interval[1],
         model_dir=BATTERY_MODEL_DIRECTORY
     )
     buffer = io.BytesIO()
     with zipfile.ZipFile(buffer, mode="w", compression=zipfile.ZIP_DEFLATED) as file:
         frame = pandas.DataFrame(
-            {"timestamp": result["time_axis"], "soc": result["soc_estimated"]}
+            {"time": result["time_axis"], "value": result["soc_estimated"]}
         )
-        file.writestr("out.csv", frame.to_csv(index=False))
+        file.writestr("Battery DT SoC.csv", frame.to_csv(index=False))
     buffer.seek(0)
     return send_file(
         buffer, mimetype="application/octet-stream", as_attachment=True,

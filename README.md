@@ -54,7 +54,7 @@ Windows:
     --env NEO4J_PASSWORD=<NEO4J_PASSWORD> ^
     --env NEO4J_DATABASE=<NEO4J_DATABASE> ^
     --volume <CLUSTERING_DIRECTORY>:/proc-mining-serv/clusterings ^
-    --volume <BATTERY_MODEL_DIRECTORY>:/proc-mining-serv/battery_models ^
+    --volume <BATTERY_MODEL_DIRECTORY>:/proc-mining-serv/battery-models ^
     --name proc-mining-serv ^
     --pull always ghcr.io/autotwineu/proc-mining-serv
 
@@ -66,7 +66,7 @@ Linux:
     --env NEO4J_PASSWORD=<NEO4J_PASSWORD> \
     --env NEO4J_DATABASE=<NEO4J_DATABASE> \
     --volume <CLUSTERING_DIRECTORY>:/proc-mining-serv/clusterings \
-    --volume <BATTERY_MODEL_DIRECTORY>:/proc-mining-serv/battery_models \
+    --volume <BATTERY_MODEL_DIRECTORY>:/proc-mining-serv/battery-models \
     --name proc-mining-serv \
     --pull always ghcr.io/autotwineu/proc-mining-serv
 
@@ -373,15 +373,13 @@ The content types of the request and response for each API endpoint are either
 <details>
     <summary>
         <code>GET</code>
-        <code><b>/api/v1/scenarios/{scenario_id}/scenario-executions</b></code>
-        <code>(get the execution IDs of a battery model)</code>
+        <code><b>/api/v1/scenario-executions/ids</b></code>
+        <code>(get the execution IDs of battery models)</code>
     </summary>
     <br/>
 
 **Parameters**
-> | Name          | Type     | Description                      |
-> |---------------|----------|----------------------------------|
-> | `scenario_id` | `string` | Scenario ID of the battery model |
+> None
 
 **Body**
 > None
@@ -393,7 +391,7 @@ The content types of the request and response for each API endpoint are either
 >
 > | Key      | Type     | Description                              |
 > |----------|----------|------------------------------------------|
-> | `i:uuid` | `string` | `i`-th execution ID of the battery model |
+> | `i:uuid` | `string` | Execution ID of the `i`-th battery model |
 
 > Example:
 > ```json
@@ -441,7 +439,7 @@ The content types of the request and response for each API endpoint are either
 <details>
     <summary>
         <code>GET</code>
-        <code><b>/api/v1/scenarios/{scenario_id}/scenario-executions/{execution_id}</b></code>
+        <code><b>/api/v1/scenario-executions/{execution_id}/json</b></code>
         <code>(get SoC estimation by a battery model)</code>
     </summary>
     <br/>
@@ -449,7 +447,6 @@ The content types of the request and response for each API endpoint are either
 **Parameters**
 > | Name           | Type     | Description                       |
 > |----------------|----------|-----------------------------------|
-> | `scenario_id`  | `string` | Scenario ID of the battery model  |
 > | `execution_id` | `string` | Execution ID of the battery model |
 
 **Body**
@@ -463,8 +460,8 @@ The content types of the request and response for each API endpoint are either
 > ```json
 > {
 >     "interval": [
->         0,
->         9223372036854775807
+>         1730419200000,
+>         1732924800000
 >     ]
 > }
 > ```
@@ -472,7 +469,67 @@ The content types of the request and response for each API endpoint are either
 **Response**
 > Code: `200`
 
-> Content: `application/octet-stream`
+> Content: `application/json`
+>
+> | Key                  | Type     | Description                          |
+> |----------------------|----------|--------------------------------------|
+> | `component`          | `string` | ID of the current component          |
+> | `data:i:name`        | `string` | Name of the `i`-th data entry        |
+> | `data:i:description` | `string` | Description of the `i`-th data entry |
+> | `data:i:type`        | `string` | Type of the `i`-th data entry        |
+> | `data:i:payload`     | `string` | Payload of the `i`-th data entry     |
+
+> Example:
+> ```json
+> {
+>     "component": "C12",
+>     "data": [
+>         {
+>             "name": "Battery DT SoC",
+>             "description": "Battery DT SoC results",
+>             "type": "chart",
+>             "payload": "[{\"time\": 1730419200000, \"value\": 50.0}]"
+>         }
+>     ]
+> }
+> ```
+
+</details>
+
+<details>
+    <summary>
+        <code>GET</code>
+        <code><b>/api/v1/scenario-executions/{execution_id}/out</b></code>
+        <code>(get SoC estimation by a battery model)</code>
+    </summary>
+    <br/>
+
+**Parameters**
+> | Name           | Type     | Description                       |
+> |----------------|----------|-----------------------------------|
+> | `execution_id` | `string` | Execution ID of the battery model |
+
+**Body**
+> Content: `application/json`
+>
+> | Key                     | Type                    | Default      | Description                            |
+> |-------------------------|-------------------------|--------------|----------------------------------------|
+> | `interval`              | `array[number]`         | `[0, 0]`     | Interval during which SoC is estimated |
+
+> Example:
+> ```json
+> {
+>     "interval": [
+>         1730419200000,
+>         1732924800000
+>     ]
+> }
+> ```
+
+**Response**
+> Code: `200`
+
+> Content: `application/octet-stream`, `attachment; filename=out.zip`
 
 </details>
 
