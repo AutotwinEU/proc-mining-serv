@@ -32,14 +32,27 @@ jobs:
         run: poetry publish
   release-image:
     name: Release image
-    needs: release-package
     runs-on: ubuntu-latest
+    needs: release-package
     permissions:
       contents: read
       packages: write
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+      - name: Check if package is ready
+        uses: nick-fields/retry@v3
+        with:
+          timeout_seconds: 15
+          retry_wait_seconds: 60
+          max_attempts: 3
+          command: >-
+            pip install --no-deps --dry-run
+            autotwin_pmswsgi==$(grep -Po '(?<=^version = ")[^"]*' pyproject.toml)
       - name: Log in to image registry
         uses: docker/login-action@v3
         with:
