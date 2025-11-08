@@ -440,7 +440,7 @@ The content types of the request and response for each API endpoint are either
     <summary>
         <code>GET</code>
         <code><b>/api/v1/scenario-executions/{execution_id}/json</b></code>
-        <code>(get SoC estimation by a battery model)</code>
+        <code>(get estimations by a battery model)</code>
     </summary>
     <br/>
 
@@ -489,6 +489,12 @@ The content types of the request and response for each API endpoint are either
 >             "description": "Battery DT SoC results",
 >             "type": "chart",
 >             "payload": "[{\"time\": 1730419200000, \"value\": 50.0}]"
+>         },
+>         {
+>             "name": "Battery DT Voltage",
+>             "description": "Battery DT Voltage results",
+>             "type": "chart",
+>             "payload": "[{\"time\": 1730419200000, \"value\": 800.0}]"
 >         }
 >     ]
 > }
@@ -500,7 +506,7 @@ The content types of the request and response for each API endpoint are either
     <summary>
         <code>GET</code>
         <code><b>/api/v1/scenario-executions/{execution_id}/out</b></code>
-        <code>(get SoC estimation by a battery model)</code>
+        <code>(get estimations by a battery model)</code>
     </summary>
     <br/>
 

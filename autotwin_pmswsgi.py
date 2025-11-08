@@ -170,14 +170,14 @@ def get_bm_parameters(execution_id) -> Response:
 
 
 @app.get("/api/v1/scenario-executions/<execution_id>/json")
-def get_bm_soc_json(execution_id) -> Response:
-    """Get SoC estimation by a battery model.
+def get_bm_estimations_json(execution_id) -> Response:
+    """Get estimations by a battery model.
 
     Args:
         execution_id: Execution ID.
 
     Returns:
-        Response with SoC estimation.
+        Response with estimations.
     """
     rack_ids = bse.get_rack_ids()
     if execution_id not in rack_ids:
@@ -206,7 +206,21 @@ def get_bm_soc_json(execution_id) -> Response:
                             for x in range(len(result["time_axis"]))
                         ]
                     ),
-                }
+                },
+                {
+                    "name": "Battery DT Voltage",
+                    "description": "Battery DT Voltage results",
+                    "type": "chart",
+                    "payload": json.dumps(
+                        [
+                            {
+                                "time": result["time_axis"][x],
+                                "value": result["v_pred_ekf"][x],
+                            }
+                            for x in range(len(result["time_axis"]))
+                        ]
+                    ),
+                },
             ],
         }
     )
@@ -214,14 +228,14 @@ def get_bm_soc_json(execution_id) -> Response:
 
 
 @app.get("/api/v1/scenario-executions/<execution_id>/out")
-def get_bm_soc_out(execution_id) -> Response:
-    """Get SoC estimation by a battery model.
+def get_bm_estimations_out(execution_id) -> Response:
+    """Get estimations by a battery model.
 
     Args:
         execution_id: Execution ID.
 
     Returns:
-        Response with SoC estimation.
+        Response with estimations.
     """
     rack_ids = bse.get_rack_ids()
     if execution_id not in rack_ids:
@@ -239,6 +253,10 @@ def get_bm_soc_out(execution_id) -> Response:
             {"time": result["time_axis"], "value": result["soc_estimated"]}
         )
         file.writestr("Battery DT SoC.csv", frame.to_csv(index=False))
+        frame = pandas.DataFrame(
+            {"time": result["time_axis"], "value": result["v_pred_ekf"]}
+        )
+        file.writestr("Battery DT Voltage.csv", frame.to_csv(index=False))
     buffer.seek(0)
     return send_file(
         buffer, mimetype="application/octet-stream", as_attachment=True,

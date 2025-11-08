@@ -20,13 +20,13 @@ skg_connector = ">=0.1.15,<0.2.0"
 
 [[package]]
 name = "autotwin-bselib"
-version = "0.1.1"
+version = "0.1.2"
 description = "Battery SoC Estimation Library for Auto-Twin"
 optional = false
 python-versions = "<4.0,>=3.10"
 files = [
-    {file = "autotwin_bselib-0.1.1-py3-none-any.whl", hash = "sha256:21255006751c71c76828f6fedef45cc6c29080a63fc136a71221915929562f30"},
-    {file = "autotwin_bselib-0.1.1.tar.gz", hash = "sha256:691e70841b03774521e3ccff860cdd4372c0ce3471f3f5f6c4550bd2f2707ebd"},
+    {file = "autotwin_bselib-0.1.2-py3-none-any.whl", hash = "sha256:bd8b9a10adbcec322d43384e0ee297e2b75b5ad27d61591eab5bb332e5d4a601"},
+    {file = "autotwin_bselib-0.1.2.tar.gz", hash = "sha256:5f92d83bda38a664417f10b06dd4649596052023aba03d2949ef4e2a0ac6d6a0"},
 ]
 
 [package.dependencies]
@@ -1422,4 +1422,4 @@ watchdog = ["watchdog (>=2.3)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "850c71bca3675bd9a48d167f6a6824f461566cdd550d9f146c938b19bfab9889"
+content-hash = "234eeae99c7f2944597628a1a9be4d1065a0c5bd18d0177ae8e76e7bba4d4afd"
