@@ -452,9 +452,9 @@ The content types of the request and response for each API endpoint are either
 **Body**
 > Content: `application/json`
 >
-> | Key                     | Type                    | Default      | Description                            |
-> |-------------------------|-------------------------|--------------|----------------------------------------|
-> | `interval`              | `array[number]`         | `[0, 0]`     | Interval during which SoC is estimated |
+> | Key                     | Type                    | Default      | Description                                |
+> |-------------------------|-------------------------|--------------|--------------------------------------------|
+> | `interval`              | `array[number]`         | `[0, 0]`     | Interval during which estimations are made |
 
 > Example:
 > ```json
@@ -488,13 +488,13 @@ The content types of the request and response for each API endpoint are either
 >             "name": "Battery DT SoC",
 >             "description": "Battery DT SoC results",
 >             "type": "chart",
->             "payload": "[{\"time\": 1730419200000, \"value\": 50.0}]"
+>             "payload": "[{\"time\": 1730419200000, \"rack_id\": \"31f61bae-dad6-4cda-bb63-d4700847dea5\", \"value\": 50.0}]"
 >         },
 >         {
 >             "name": "Battery DT Voltage",
 >             "description": "Battery DT Voltage results",
 >             "type": "chart",
->             "payload": "[{\"time\": 1730419200000, \"value\": 800.0}]"
+>             "payload": "[{\"time\": 1730419200000, \"rack_id\": \"31f61bae-dad6-4cda-bb63-d4700847dea5\", \"value\": 800.0}]"
 >         }
 >     ]
 > }
@@ -518,9 +518,9 @@ The content types of the request and response for each API endpoint are either
 **Body**
 > Content: `application/json`
 >
-> | Key                     | Type                    | Default      | Description                            |
-> |-------------------------|-------------------------|--------------|----------------------------------------|
-> | `interval`              | `array[number]`         | `[0, 0]`     | Interval during which SoC is estimated |
+> | Key                     | Type                    | Default      | Description                                |
+> |-------------------------|-------------------------|--------------|--------------------------------------------|
+> | `interval`              | `array[number]`         | `[0, 0]`     | Interval during which estimations are made |
 
 > Example:
 > ```json

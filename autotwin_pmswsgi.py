@@ -201,6 +201,7 @@ def get_bm_estimations_json(execution_id) -> Response:
                         [
                             {
                                 "time": result["time_axis"][x],
+                                "rack_id": execution_id,
                                 "value": result["soc_estimated"][x],
                             }
                             for x in range(len(result["time_axis"]))
@@ -215,6 +216,7 @@ def get_bm_estimations_json(execution_id) -> Response:
                         [
                             {
                                 "time": result["time_axis"][x],
+                                "rack_id": execution_id,
                                 "value": result["v_pred_ekf"][x],
                             }
                             for x in range(len(result["time_axis"]))
@@ -250,11 +252,19 @@ def get_bm_estimations_out(execution_id) -> Response:
     buffer = io.BytesIO()
     with zipfile.ZipFile(buffer, mode="w", compression=zipfile.ZIP_DEFLATED) as file:
         frame = pandas.DataFrame(
-            {"time": result["time_axis"], "value": result["soc_estimated"]}
+            {
+                "time": result["time_axis"],
+                "rack_id": [execution_id for _ in result["time_axis"]],
+                "value": result["soc_estimated"],
+            }
         )
         file.writestr("Battery DT SoC.csv", frame.to_csv(index=False))
         frame = pandas.DataFrame(
-            {"time": result["time_axis"], "value": result["v_pred_ekf"]}
+            {
+                "time": result["time_axis"],
+                "rack_id": [execution_id for _ in result["time_axis"]],
+                "value": result["v_pred_ekf"],
+            }
         )
         file.writestr("Battery DT Voltage.csv", frame.to_csv(index=False))
     buffer.seek(0)
